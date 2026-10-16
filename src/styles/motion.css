@@ -23,7 +23,7 @@
 html.motion:not(.ready) .hero__title .line__inner {
   transform: translateY(140%);
 }
-html.motion:not(.ready) :is(.hero__lead, .hero__actions) {
+html.motion:not(.ready) :is(.hero__lead, .hero__actions, .hero__preview) {
   opacity: 0;
 }
 html.motion.ready .hero__title .line__inner {
@@ -38,6 +38,9 @@ html.motion.ready .hero__lead {
 }
 html.motion.ready .hero__actions {
   animation: fade-up 1.3s var(--ease-out) 0.77s both;
+}
+html.motion.ready .hero__preview {
+  animation: fade-up 1.3s var(--ease-out) 0.9s both;
 }
 
 html.motion [data-split] {

@@ -230,14 +230,13 @@ button {
 }
 
 .lead {
-  font-size: clamp(1.0625rem, 0.95rem + 0.42vw, 1.375rem);
-  line-height: 1.48;
+  font-size: clamp(1.125rem, 1rem + 0.5vw, 1.4375rem);
+  line-height: 1.5;
   letter-spacing: -0.006em;
-  max-width: 40ch;
+  max-width: 42ch;
   text-wrap: pretty;
-  color: color-mix(in srgb, currentColor 74%, transparent);
+  color: color-mix(in srgb, currentColor 80%, transparent);
 }
-
 .label {
   font-family: var(--mono);
   font-size: 0.75rem;

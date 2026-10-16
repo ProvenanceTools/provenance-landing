@@ -85,7 +85,7 @@ async function boot(): Promise<void> {
     $<HTMLTextAreaElement>('[data-input]')!,
     $<HTMLOListElement>('[data-log]')!,
     $<HTMLElement>('[data-log-status]')!,
-    $<HTMLButtonElement>('[data-replay]')!,
+    $<HTMLButtonElement>('.playground [data-replay]')!,
   );
   disposers.push(() => playground.dispose());
 

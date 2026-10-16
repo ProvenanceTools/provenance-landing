@@ -36,6 +36,7 @@ export class Playground {
   private readonly t0 = performance.now();
   private pasteNext: number | null = null;
   private replaying = false;
+  private releaseTab = false;
   private readonly abort = new AbortController();
 
   constructor(
@@ -58,12 +59,22 @@ export class Playground {
     );
     input.addEventListener('input', () => this.onInput(), opts);
     input.addEventListener('focus', () => this.record('focus.change', { focused: true }), opts);
-    input.addEventListener('blur', () => this.record('focus.change', { focused: false }), opts);
+    input.addEventListener(
+      'blur',
+      () => {
+        this.releaseTab = false;
+        this.record('focus.change', { focused: false });
+      },
+      opts,
+    );
     input.addEventListener(
       'keydown',
       (e) => {
-        // A real editor indents with Tab; keep focus in the editor.
-        if (e.key === 'Tab' && !e.shiftKey) {
+        // A real editor indents with Tab and keeps focus in the editor. Escape hands Tab
+        // back to the page, so the editor is never a keyboard trap.
+        if (e.key === 'Escape') this.releaseTab = true;
+        else if (e.key === 'Tab' && this.releaseTab) this.releaseTab = false;
+        else if (e.key === 'Tab' && !e.shiftKey) {
           e.preventDefault();
           const { selectionStart: a, selectionEnd: b } = input;
           input.setRangeText('    ', a, b, 'end');

@@ -13,77 +13,203 @@ section {
 /* ------------------------------------------------------------------- hero */
 
 .hero {
-  min-height: 100svh;
+  min-height: min(100svh, 840px);
   display: flex;
   align-items: flex-end;
-  padding: calc(var(--nav-h) + 24px) 0 clamp(36px, 7.5vh, 96px);
+  padding: calc(var(--nav-h) + 24px) 0 clamp(28px, 5vh, 56px);
 }
 .hero__anchor {
-  left: 68%;
-  top: 40%;
-  height: 29vh;
+  left: 24%;
+  top: calc(var(--nav-h) + 10vh);
+  height: 18vh;
   transform: translateY(-50%);
 }
 .hero__inner {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: 24px;
+  row-gap: clamp(20px, 3vh, 32px);
   align-items: end;
 }
 .hero__title {
-  grid-column: 1 / span 8;
+  grid-column: 1 / span 6;
+  grid-row: 1;
+  font-size: clamp(3.3rem, 7.4vw, 8.4rem);
 }
 .hero__side {
-  grid-column: 9 / span 4;
+  grid-column: 1 / span 6;
+  grid-row: 2;
   display: grid;
-  gap: 28px;
-  padding-bottom: 0.55em;
+  gap: 30px;
 }
+/* The product statement: bright, sized to be read, set off by a thin warm rule. */
 .hero__lead {
-  max-width: 30ch;
+  max-width: 38ch;
+  padding-left: clamp(16px, 1.6vw, 22px);
+  border-left: 2px solid var(--gold);
+  font-size: clamp(1.1875rem, 1.05rem + 0.45vw, 1.375rem);
+  line-height: 1.55;
+  letter-spacing: -0.004em;
+  color: rgb(4 30 66 / 0.86);
+}
+
+/* A still preview of the real recorder, clearly a picture: it has a label, no caret and
+   no controls. The working editor is the Try It section further down. */
+.hero__preview {
+  grid-column: 7 / span 6;
+  grid-row: 1 / span 2;
+  align-self: end;
+  display: grid;
+  gap: 12px;
+}
+.hero__preview-tag {
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(4 30 66 / 0.66);
+}
+.preview {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  height: clamp(300px, 44vh, 420px);
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--night-1);
+  color: var(--porcelain);
+  box-shadow:
+    inset 0 0 0 1px rgb(245 245 242 / 0.12),
+    0 30px 70px -30px rgb(4 30 66 / 0.5);
+  user-select: none;
+}
+.preview__pane {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 0;
+}
+.preview__pane--log {
+  box-shadow: inset 1px 0 0 rgb(245 245 242 / 0.08);
+}
+.preview__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 0.75rem;
+  color: rgb(245 245 242 / 0.7);
+  box-shadow: inset 0 -1px 0 rgb(245 245 242 / 0.08);
+}
+.preview__code {
+  margin: 0;
+  padding: 18px 20px;
+  overflow: hidden;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  color: var(--porcelain);
+}
+.preview__rows {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2px;
+  padding: 14px 16px;
+  overflow: hidden;
+  font-size: 0.78rem;
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 30%);
+}
+.preview__rows li {
+  display: grid;
+  grid-template-columns: 3em 1fr auto;
+  gap: 12px;
+  white-space: nowrap;
+  color: rgb(245 245 242 / 0.7);
+}
+.preview__rows li:last-child {
+  color: var(--porcelain);
+}
+.preview__rows .k {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.preview__rows .k i {
+  font-style: normal;
+  color: rgb(245 245 242 / 0.62);
+}
+.preview__rows .h {
+  color: rgb(245 245 242 / 0.6);
+}
+.hero__preview-link {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--accent-d);
+  transition: gap 0.4s var(--ease-out);
+}
+.hero__preview-link:hover {
+  gap: 12px;
 }
 
 @media (max-width: 1100px) {
-  .hero__title {
-    grid-column: 1 / -1;
+  .hero {
+    padding-top: calc(var(--nav-h) + 20vh);
   }
-  .hero__side {
-    grid-column: 1 / span 8;
-    margin-top: 32px;
-    padding-bottom: 0;
+  .hero__title,
+  .hero__side,
+  .hero__preview {
+    grid-column: 1 / -1;
+    grid-row: auto;
   }
   .hero__anchor {
-    left: 62%;
-    top: 34%;
-    height: 27vh;
+    left: 70%;
+    top: calc(var(--nav-h) + 10vh);
+    height: 20vh;
+  }
+  .hero__preview {
+    margin-top: 12px;
   }
 }
 @media (max-width: 640px) {
   .hero__side {
-    grid-column: 1 / -1;
     gap: 22px;
-    margin-top: 22px;
   }
   .hero__anchor {
     left: 50%;
-    top: 30%;
-    height: min(21vh, 46vw);
+    top: calc(var(--nav-h) + 8vh);
+    height: min(16vh, 36vw);
+  }
+  .preview {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: 380px;
+  }
+  .preview__pane--log {
+    box-shadow: inset 0 1px 0 rgb(245 245 242 / 0.08);
   }
 }
 
 /* ------------------------------------------------------------------ proof */
 
 .proof {
-  padding: clamp(96px, 14vh, 180px) 0 clamp(48px, 6vh, 96px);
+  padding: clamp(32px, 5vh, 56px) 0 clamp(48px, 7vh, 80px);
+}
+.proof .wrap {
+  padding-top: 22px;
+  border-top: 1px solid var(--hair);
+}
+.proof .label {
+  margin-bottom: 14px;
 }
 .proof__courses {
   display: flex;
   flex-wrap: wrap;
   column-gap: 0.42em;
   row-gap: 0;
-  margin-top: 28px;
-  font-size: clamp(2.6rem, 7.6vw, 8.6rem);
-  line-height: 0.98;
+  font-size: clamp(2rem, 4.6vw, 4.4rem);
+  line-height: 1;
   letter-spacing: -0.045em;
   font-weight: 500;
   font-stretch: 76%;
@@ -97,7 +223,7 @@ section {
 .cohort {
   position: relative;
   height: clamp(150px, 22vh, 230px);
-  margin-top: clamp(36px, 5vw, 64px);
+  margin-top: clamp(20px, 3vw, 36px);
 }
 .cohort canvas {
   position: absolute;
@@ -110,8 +236,8 @@ section {
   align-items: baseline;
   flex-wrap: wrap;
   gap: 8px 18px;
-  margin-top: clamp(20px, 3vw, 36px);
-  padding-top: 20px;
+  margin-top: 18px;
+  padding-top: 14px;
   border-top: 1px solid var(--hair);
 }
 .proof__number {
@@ -128,10 +254,10 @@ section {
 /* ----------------------------------------------------------------- thesis */
 
 .thesis {
-  min-height: 140vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 12vh 0;
+  padding: 14vh 0;
 }
 .thesis__anchor {
   left: 101%;
@@ -143,15 +269,15 @@ section {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: 24px;
-  row-gap: clamp(32px, 5vw, 64px);
+  row-gap: clamp(24px, 3.4vw, 44px);
 }
 .thesis__title {
-  grid-column: 1 / span 6;
-  max-width: 9.5em;
+  grid-column: 1 / span 7;
+  max-width: 11em;
+  font-size: clamp(2.3rem, 5vw, 5.4rem);
 }
 .thesis__body {
-  grid-column: 2 / span 5;
-  max-width: 38ch;
+  grid-column: 1 / span 6;
 }
 @media (max-width: 900px) {
   /* Room below the copy for the close-up, which must be off-screen before the
@@ -175,7 +301,7 @@ section {
 /* ------------------------------------------------------- two histories */
 
 .histories {
-  padding: clamp(96px, 16vh, 180px) 0 clamp(120px, 20vh, 220px);
+  padding: clamp(56px, 9vh, 104px) 0 clamp(64px, 10vh, 120px);
 }
 .histories__head {
   display: grid;
@@ -183,10 +309,10 @@ section {
   align-items: end;
   column-gap: 40px;
   row-gap: 14px;
-  margin-bottom: clamp(40px, 7vh, 80px);
+  margin-bottom: clamp(24px, 4vh, 44px);
 }
 .histories__head .lead {
-  max-width: 30ch;
+  max-width: 34ch;
   padding-bottom: 0.3em;
 }
 
@@ -199,7 +325,7 @@ section {
 .records__axis {
   position: relative;
   height: 22px;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: rgb(245 245 242 / 0.5);
   font-variant-numeric: tabular-nums;
 }
@@ -306,7 +432,7 @@ section {
 .record__notes {
   position: relative;
   height: 34px;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   color: rgb(245 245 242 / 0.7);
 }
 .note {
@@ -454,7 +580,7 @@ html.no-js .note {
 /* -------------------------------------------------------- how (the chain) */
 
 .how {
-  height: 520vh;
+  height: 400vh;
 }
 .how__sticky {
   position: sticky;
@@ -560,10 +686,10 @@ html.no-js .how__copy[data-phase='chain'] {
 .ledger__rows .k i {
   font-style: normal;
   white-space: pre;
-  color: color-mix(in srgb, var(--porcelain) 36%, transparent);
+  color: color-mix(in srgb, var(--porcelain) 56%, transparent);
 }
 .ledger__rows .h {
-  color: color-mix(in srgb, var(--porcelain) 42%, transparent);
+  color: color-mix(in srgb, var(--porcelain) 58%, transparent);
 }
 .ledger__rows li:last-child .h {
   color: var(--accent-n);
@@ -573,12 +699,12 @@ html.no-js .how__copy[data-phase='chain'] {
   color: var(--accent-n);
 }
 .ledger__rows li.is-unverified {
-  color: color-mix(in srgb, var(--porcelain) 30%, transparent);
+  color: color-mix(in srgb, var(--porcelain) 52%, transparent);
   text-decoration: line-through;
   text-decoration-color: color-mix(in srgb, var(--accent-n) 70%, transparent);
 }
 .ledger__rows li.is-unverified .h {
-  color: color-mix(in srgb, var(--porcelain) 24%, transparent);
+  color: color-mix(in srgb, var(--porcelain) 52%, transparent);
 }
 
 @media (max-width: 900px) {
@@ -619,20 +745,20 @@ html.no-js .how__copy[data-phase='chain'] {
 /* ---------------------------------------------------------------- relight */
 
 .relight {
-  height: 110vh;
+  height: 80vh;
 }
 
 /* ------------------------------------------------------- built not to accuse */
 
 .fair {
-  padding: 2vh 0 clamp(96px, 14vh, 180px);
+  padding: 2vh 0 clamp(56px, 8vh, 104px);
 }
 .fair__top {
   position: relative;
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: 24px;
-  min-height: 84vh;
+  min-height: 56vh;
   align-items: center;
 }
 .fair__copy {
@@ -648,27 +774,27 @@ html.no-js .how__copy[data-phase='chain'] {
 }
 .principles {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: clamp(32px, 6vw, 112px);
-  margin-top: clamp(24px, 4vh, 56px);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: clamp(20px, 2.4vw, 40px);
+  margin-top: clamp(16px, 3vh, 32px);
 }
 .principle {
   display: grid;
   align-content: start;
-  gap: 14px;
-  padding: 30px 0 clamp(40px, 6vh, 72px);
+  gap: 12px;
+  padding: 22px 0 clamp(24px, 4vh, 40px);
   border-top: 1px solid var(--hair);
 }
 .principle__title {
-  font-size: clamp(1.5rem, 2.2vw, 2.15rem);
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  font-size: clamp(1.25rem, 1.65vw, 1.6rem);
+  line-height: 1.1;
+  letter-spacing: -0.028em;
   font-weight: 500;
   font-stretch: 88%;
-  max-width: 18ch;
 }
 .principle p {
-  max-width: 44ch;
+  font-size: 1rem;
+  line-height: 1.55;
   color: rgb(4 30 66 / 0.72);
 }
 .flag {
@@ -680,13 +806,13 @@ html.no-js .how__copy[data-phase='chain'] {
   padding: 7px 14px 7px 7px;
   border-radius: 999px;
   box-shadow: inset 0 0 0 1px rgb(4 30 66 / 0.14);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   background: rgb(255 255 255 / 0.35);
 }
 .flag__level {
   padding: 4px 10px;
   border-radius: 999px;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   letter-spacing: 0.04em;
   background: var(--gold);
   color: var(--ink);
@@ -729,7 +855,7 @@ html.no-js .how__copy[data-phase='chain'] {
   box-shadow: inset 0 0 0 1.25px rgb(4 30 66 / 0.55);
 }
 .fair__pull {
-  margin-top: clamp(24px, 5vh, 64px);
+  margin-top: clamp(8px, 2vh, 24px);
 }
 .pull {
   max-width: 26ch;
@@ -755,6 +881,13 @@ html.no-js .how__copy[data-phase='chain'] {
     top: 20vh;
     height: 22vh;
   }
+}
+@media (max-width: 1180px) {
+  .principles {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 640px) {
   .principles {
     grid-template-columns: 1fr;
   }
@@ -763,19 +896,23 @@ html.no-js .how__copy[data-phase='chain'] {
 /* ---------------------------------------------------------- see the process */
 
 .insight {
-  padding: clamp(80px, 12vh, 160px) 0;
+  padding: clamp(56px, 8vh, 104px) 0;
 }
 .insight__copy {
   display: grid;
-  gap: 28px;
+  gap: 20px;
   max-width: 820px;
 }
+/* The plot sits in a panel directly under the copy, so the two read as one explanation. */
 .evening {
-  margin-top: clamp(48px, 8vh, 104px);
+  margin-top: clamp(24px, 4vh, 44px);
+  padding: clamp(14px, 1.8vw, 26px) clamp(14px, 1.8vw, 26px) 6px;
+  background: rgb(255 255 255 / 0.45);
+  box-shadow: inset 0 0 0 1px rgb(4 30 66 / 0.1);
 }
 .evening__plot {
   position: relative;
-  height: clamp(200px, 28vh, 280px);
+  height: clamp(230px, 34vh, 320px);
 }
 .evening__plot svg {
   position: absolute;
@@ -789,7 +926,7 @@ html.no-js .how__copy[data-phase='chain'] {
 }
 .evening__note {
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: 12.5px;
   fill: rgb(4 30 66 / 0.82);
   transition: opacity 0.6s var(--ease-soft);
 }
@@ -809,26 +946,37 @@ html.no-js .how__copy[data-phase='chain'] {
 /* ------------------------------------------------------------- one folder */
 
 .privacy {
-  padding: clamp(80px, 12vh, 160px) 0;
+  padding: clamp(56px, 8vh, 104px) 0;
+}
+/* Introduction, then the way in (guide and editors), then what is recorded, the pledges,
+   the recording-scope field and finally the help line. */
+.privacy .wrap {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  align-items: end;
+}
+.privacy .wrap > * {
+  grid-column: 1 / -1;
 }
 .privacy__copy {
   display: grid;
-  gap: 28px;
+  gap: 20px;
   max-width: 800px;
 }
 .field {
   position: relative;
-  height: clamp(280px, 40vh, 420px);
-  margin-top: clamp(40px, 7vh, 88px);
+  height: clamp(180px, 25vh, 270px);
+  margin-top: clamp(32px, 6vh, 56px);
   overflow: hidden;
   mask-image: radial-gradient(75% 95% at 50% 50%, #000 55%, transparent 100%);
 }
 .field__item {
   position: absolute;
   font-family: var(--mono);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   white-space: nowrap;
-  color: rgb(4 30 66 / var(--dim, 0.46));
+  color: rgb(4 30 66 / var(--dim, 0.72));
   transform: translate(-50%, -50%);
   transition: color 0.8s var(--ease-soft);
 }
@@ -860,12 +1008,12 @@ html.no-js .how__copy[data-phase='chain'] {
   color: var(--accent-d);
 }
 .field.is-lit {
-  --dim: 0.3;
+  --dim: 0.64;
 }
 .sees {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin-top: clamp(40px, 7vh, 88px);
+  margin-top: clamp(40px, 7vh, 64px);
 }
 .sees__col {
   padding: 8px clamp(24px, 4vw, 64px) 8px 0;
@@ -884,9 +1032,9 @@ html.no-js .how__copy[data-phase='chain'] {
 }
 .sees ul {
   display: grid;
-  gap: clamp(12px, 1.8vh, 20px);
-  margin-top: 24px;
-  font-size: clamp(1.2rem, 1.75vw, 1.65rem);
+  gap: clamp(8px, 1.4vh, 14px);
+  margin-top: 16px;
+  font-size: clamp(1.1rem, 1.45vw, 1.4rem);
   line-height: 1.18;
   letter-spacing: -0.025em;
   font-stretch: 92%;
@@ -895,20 +1043,30 @@ html.no-js .how__copy[data-phase='chain'] {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
-  margin-top: clamp(48px, 8vh, 96px);
-  padding-top: 26px;
+  margin-top: clamp(28px, 5vh, 48px);
+  padding-top: 20px;
   border-top: 1px solid var(--hair);
   color: rgb(4 30 66 / 0.72);
   font-size: 0.95rem;
 }
 .pledges strong {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 6px;
   font-weight: 500;
   color: var(--ink);
 }
+.pledges strong::before {
+  content: '';
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-d);
+}
 .privacy__foot {
-  margin-top: clamp(32px, 5vh, 56px);
+  margin-top: 0;
 }
 @media (max-width: 900px) {
   .pledges {
@@ -937,7 +1095,7 @@ html.no-js .how__copy[data-phase='chain'] {
 /* ----------------------------------------------------------------- try it */
 
 .tryit {
-  height: 320vh;
+  height: 260vh;
 }
 .tryit__sticky {
   position: sticky;
@@ -994,7 +1152,7 @@ html.no-js .how__copy[data-phase='chain'] {
 .playground__replay {
   padding: 6px 12px;
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--porcelain);
   box-shadow: inset 0 0 0 1px rgb(245 245 242 / 0.22);
   transition: box-shadow 0.3s var(--ease-soft);
@@ -1085,7 +1243,7 @@ html.no-js .how__copy[data-phase='chain'] {
 }
 .playground__input:focus-visible {
   outline: none;
-  box-shadow: inset 0 0 0 1px rgb(253 181 21 / 0.5);
+  box-shadow: inset 0 0 0 2px rgb(253 181 21 / 0.5);
 }
 .playground__rows {
   display: flex;
@@ -1094,7 +1252,7 @@ html.no-js .how__copy[data-phase='chain'] {
   gap: 2px;
   padding: 14px 16px;
   overflow: hidden;
-  font-size: 0.74rem;
+  font-size: 0.78rem;
   mask-image: linear-gradient(to bottom, transparent 0%, #000 30%);
 }
 .playground__rows li {
@@ -1114,10 +1272,10 @@ html.no-js .how__copy[data-phase='chain'] {
 }
 .playground__rows li .k i {
   font-style: normal;
-  color: rgb(245 245 242 / 0.4);
+  color: rgb(245 245 242 / 0.62);
 }
 .playground__rows li .h {
-  color: rgb(245 245 242 / 0.35);
+  color: rgb(245 245 242 / 0.6);
 }
 .playground__rows li.is-paste,
 .playground__rows li.is-paste .h,
@@ -1148,25 +1306,36 @@ html.no-js .how__copy[data-phase='chain'] {
 /* ----------------------------------------------------------------- limits */
 
 .limits {
-  padding: clamp(80px, 12vh, 160px) 0 clamp(120px, 20vh, 260px);
+  padding: clamp(56px, 8vh, 104px) 0 clamp(64px, 10vh, 120px);
 }
+/* The claim and its source side by side: statement left, the design document's words right. */
 .limits__inner {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: auto 1fr;
   column-gap: 24px;
-  row-gap: 28px;
+  row-gap: 20px;
+  align-items: start;
 }
-.limits__inner > * {
-  grid-column: 3 / span 8;
+.limits__inner > h2,
+.limits__inner > .lead {
+  grid-column: 1 / span 6;
+}
+.limits__inner > .quote {
+  grid-column: 8 / span 5;
+  grid-row: 1 / span 2;
+  align-self: center;
 }
 .limits .lead {
   max-width: 46ch;
 }
 .quote {
-  margin-top: clamp(32px, 6vh, 72px);
+  margin-top: 0;
+  padding-left: clamp(16px, 2vw, 28px);
+  border-left: 2px solid var(--gold);
 }
 .quote p {
-  font-size: clamp(1.75rem, 3.5vw, 3.4rem);
+  font-size: clamp(1.4rem, 2.3vw, 2.2rem);
   line-height: 1.08;
   letter-spacing: -0.035em;
   font-weight: 500;
@@ -1177,22 +1346,28 @@ html.no-js .how__copy[data-phase='chain'] {
 .quote footer {
   margin-top: 22px;
   font-size: 0.8125rem;
-  color: rgb(4 30 66 / 0.6);
+  color: rgb(4 30 66 / 0.74);
 }
 @media (max-width: 900px) {
-  .limits__inner > * {
+  .limits__inner > h2,
+  .limits__inner > .lead,
+  .limits__inner > .quote {
     grid-column: 1 / -1;
+    grid-row: auto;
+  }
+  .limits__inner > .quote {
+    margin-top: 12px;
   }
 }
 
 /* ------------------------------------------------------------------ close */
 
 .close {
-  min-height: 100svh;
+  min-height: min(100svh, 820px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-top: clamp(140px, 24vh, 280px);
+  padding-top: clamp(96px, 14vh, 160px);
 }
 .close__anchor {
   left: 78%;
@@ -1217,8 +1392,8 @@ html.no-js .how__copy[data-phase='chain'] {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 24px;
-  margin-top: clamp(96px, 18vh, 220px);
-  padding: 26px 0 calc(28px + env(safe-area-inset-bottom));
+  margin-top: clamp(48px, 8vh, 96px);
+  padding: 22px 0 calc(24px + env(safe-area-inset-bottom));
   border-top: 1px solid var(--hair);
   font-size: 0.9375rem;
 }
@@ -1234,14 +1409,24 @@ html.no-js .how__copy[data-phase='chain'] {
 .foot__links {
   display: flex;
   justify-content: center;
-  gap: 28px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 .foot__links a {
-  color: rgb(4 30 66 / 0.78);
-  transition: color 0.3s var(--ease-soft);
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px rgb(4 30 66 / 0.3);
+  transition:
+    background-color 0.3s var(--ease-soft),
+    box-shadow 0.3s var(--ease-soft);
 }
 .foot__links a:hover {
-  color: var(--ink);
+  background: rgb(255 255 255 / 0.35);
+  box-shadow: inset 0 0 0 1px rgb(4 30 66 / 0.6);
 }
 .foot__made {
   color: rgb(4 30 66 / 0.7);
@@ -1268,6 +1453,38 @@ html.no-js .how__copy[data-phase='chain'] {
   }
 }
 
+/* Reduced motion or no script: the chain chapter is not pinned. Its three explanations are
+   stacked in the page, and the chapter is kept taller than the viewport so the scroll maths
+   in acts.ts stays well defined. */
+html:not(.motion) .how {
+  height: auto;
+}
+html:not(.motion) .how__sticky {
+  position: relative;
+  height: auto;
+  min-height: 190svh;
+  overflow: visible;
+  display: grid;
+  align-content: start;
+  gap: clamp(28px, 5vh, 56px);
+  padding: calc(var(--nav-h) + clamp(12px, 4vh, 56px)) var(--gutter) clamp(48px, 8vh, 96px);
+}
+/* The 3D chain sits below the stacked explanations instead of behind them. */
+html:not(.motion) .how__anchor {
+  top: auto;
+  bottom: 40svh;
+  transform: none;
+}
+html:not(.motion) .how__copy {
+  position: relative;
+  left: auto;
+  top: auto;
+  width: min(780px, 100%);
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
 /* Reduced motion or no script: the editor simply sits in the page. */
 html:not(.motion) .tryit {
   height: auto;
@@ -1292,7 +1509,8 @@ html:not(.motion) .tryit__copy {
 /* ------------------------------------------------------------------ suite */
 
 .suite {
-  padding: clamp(80px, 12vh, 160px) 0;
+  /* The dark sheet fades in just below: keep the last card clear of it. */
+  padding: clamp(56px, 8vh, 104px) 0 clamp(96px, 15vh, 150px);
 }
 .suite__copy {
   display: grid;
@@ -1305,7 +1523,7 @@ html:not(.motion) .tryit__copy {
   grid-template-columns: 1.15fr 1fr 1fr 1fr;
   column-gap: clamp(36px, 5vw, 96px);
   align-items: center;
-  margin-top: clamp(80px, 11vh, 136px);
+  margin-top: clamp(64px, 8vh, 96px);
 }
 .suite__wires {
   position: absolute;
@@ -1343,8 +1561,14 @@ html:not(.motion) .tryit__copy {
 .suite__stage {
   position: absolute;
   top: -2.8em;
-  font-size: 0.72rem;
-  color: rgb(4 30 66 / 0.64);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--accent-d);
+}
+/* Record, Hand in, Check, Review: the reading order, drawn as a sequence. */
+.suite__col:not(:last-child) .suite__stage::after {
+  content: ' \2192';
+  color: rgb(4 30 66 / 0.62);
 }
 .tool {
   position: relative;
@@ -1371,7 +1595,7 @@ a.tool:hover {
   justify-self: start;
   padding: 3px 9px;
   border-radius: 999px;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   letter-spacing: 0.02em;
   color: var(--accent-d);
   box-shadow: inset 0 0 0 1px rgb(0 38 118 / 0.35);
@@ -1385,8 +1609,8 @@ a.tool:hover {
   font-stretch: 90%;
 }
 .tool__line {
-  font-size: 0.9rem;
-  line-height: 1.45;
+  font-size: 0.9375rem;
+  line-height: 1.5;
   color: rgb(4 30 66 / 0.68);
   max-width: 34ch;
 }
@@ -1423,10 +1647,23 @@ a.tool:hover {
 }
 
 .privacy__foot {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 16px 28px;
+  display: grid;
+  justify-items: start;
+  gap: 22px;
+  margin-top: clamp(24px, 4vh, 36px);
+}
+.privacy__editors {
+  display: grid;
+  gap: 10px;
+}
+/* The one action to take first: larger than every other button in the section. */
+.btn--install {
+  --h: 68px;
+  padding: 0 34px;
+  font-size: 1.1875rem;
+}
+.btn--install:has(.btn__icon) {
+  padding-right: 10px;
 }
 .privacy__get {
   font-size: 0.75rem;
@@ -1481,4 +1718,156 @@ a.tool:hover {
   .emboss {
     display: none;
   }
+}
+
+/* ------------------------------------------------- for instructors & TAs */
+
+.problem {
+  padding: clamp(80px, 12vh, 160px) 0 0;
+  scroll-margin-top: 0;
+}
+.problem__copy {
+  display: grid;
+  gap: 28px;
+  max-width: 820px;
+}
+
+/* ------------------------------------------------------- section tags */
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: start;
+  padding: 8px 16px;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.section-tag::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--gold);
+}
+
+/* --------------------------------------------------------- safeguards */
+
+.safeguards__head {
+  margin-top: clamp(64px, 10vh, 120px);
+  margin-bottom: clamp(24px, 4vh, 48px);
+}
+
+.histories__head .section-tag {
+  grid-column: 1 / -1;
+}
+
+/* ------------------------------------------------------------ find help */
+
+.privacy__help {
+  margin-top: 20px;
+  font-size: 1rem;
+  color: rgb(4 30 66 / 0.76);
+}
+.privacy__help-label {
+  font-weight: 500;
+  color: var(--ink);
+}
+.privacy__help a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ------------------------------------------------------------ refinement */
+
+/* Section labels: quiet orientation, not a second headline. */
+.section-tag {
+  padding: 6px 14px;
+  border: 1px solid color-mix(in srgb, currentColor 34%, transparent);
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, currentColor 78%, transparent);
+}
+.section-tag::before {
+  background: var(--gold);
+}
+
+/* Human review gets the one warm mark among the four safeguards. */
+.principle:last-child {
+  border-top-color: var(--gold);
+}
+
+/* A reserved frame for a real product clip. Replace the element, keep the proportions. */
+.demo-slot {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  border-radius: 16px;
+  background: linear-gradient(180deg, var(--night-1), var(--night-0));
+  box-shadow:
+    inset 0 0 0 1px rgb(245 245 242 / 0.14),
+    0 30px 70px -30px rgb(4 30 66 / 0.45);
+}
+.demo-slot__tag {
+  position: absolute;
+  left: 16px;
+  top: 14px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(245 245 242 / 0.7);
+  box-shadow: inset 0 0 0 1px rgb(245 245 242 / 0.22);
+}
+.demo-slot__tag::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  vertical-align: 0.08em;
+}
+.demo-slot--thesis {
+  grid-column: 1 / span 7;
+}
+
+/* For instructors: the argument, with room beside it for the Analyzer demo. */
+.problem .wrap {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  align-items: center;
+}
+.problem__copy {
+  grid-column: 1 / span 6;
+  max-width: none;
+}
+.demo-slot--problem {
+  grid-column: 7 / span 6;
+}
+@media (max-width: 900px) {
+  .demo-slot--thesis,
+  .problem__copy,
+  .demo-slot--problem {
+    grid-column: 1 / -1;
+  }
+  .demo-slot--problem {
+    margin-top: 28px;
+  }
+}
+
+/* Try It: the working editor is a lit surface on the dark ground. */
+.playground {
+  border-radius: 16px;
+  background: var(--night-1);
+  box-shadow:
+    inset 0 0 0 1px rgb(245 245 242 / 0.14),
+    0 40px 100px -40px rgb(4 30 66 / 0.45);
 }
