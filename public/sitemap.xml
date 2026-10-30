@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://provtools.com/</loc></url>
+  <url><loc>https://provtools.com/students.html</loc></url>
+  <url><loc>https://provtools.com/instructors.html</loc></url>
+  <url><loc>https://provtools.com/guide.html</loc></url>
 </urlset>

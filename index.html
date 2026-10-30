@@ -72,23 +72,13 @@
     </script>
   </head>
 
-  <body>
+  <body class="page-overview">
     <a class="skip" href="#main">Skip to content</a>
 
-    <!-- The ground: daylight paper, night studio, signal gold. Scroll drives the mix. -->
-    <div class="ground" aria-hidden="true">
-      <div class="ground__night"></div>
-      <div class="ground__dawn"></div>
-      <div class="ground__day"></div>
-      <div class="ground__signal"><div class="ground__pattern" data-pattern></div></div>
-    </div>
-
-    <canvas class="stage" aria-hidden="true"></canvas>
     <div class="grain" aria-hidden="true"></div>
-    <div class="veil" aria-hidden="true"></div>
 
     <header class="nav" data-theme="day">
-      <a class="nav__brand" href="#top" aria-label="Provenance, back to top">
+      <a class="nav__brand" href="./" aria-label="Provenance, overview">
         <svg class="mark" viewBox="40 64 176 124" aria-hidden="true">
           <defs>
             <clipPath id="nav-cross"><rect x="96" y="50" width="64" height="78" /></clipPath>
@@ -101,649 +91,299 @@
         </svg>
         <span class="wordmark">Provenance</span>
       </a>
-      <nav class="nav__island" aria-label="Primary">
-        <a class="nav__link" href="#histories">How it works</a>
-        <a class="nav__link" href="#suite">Tools</a>
-        <a class="nav__link" href="#students">For students</a>
-        <a class="nav__link" href="https://github.com/ProvenanceTools">GitHub</a>
-        <a
-          class="btn btn--primary btn--small"
-          href="mailto:aaryanm@berkeley.edu?subject=Provenance%20for%20my%20course"
-        >
-          <span>Talk to us</span>
-          <span class="btn__icon" aria-hidden="true">&#8599;</span>
-        </a>
+      <nav class="nav__links" aria-label="Primary">
+        <a class="nav__link" href="./" aria-current="page"><span class="nav__full">Overview</span><span class="nav__short">Overview</span></a>
+        <a class="nav__link" href="students.html"><span class="nav__full">For students</span><span class="nav__short">Students</span></a>
+        <a class="nav__link" href="instructors.html"><span class="nav__full">For instructors &amp; TAs</span><span class="nav__short">Instructors</span></a>
       </nav>
+      <div class="nav__end">
+        <a class="nav__link nav__link--quiet" href="https://github.com/ProvenanceTools">GitHub</a>
+        <a class="btn btn--primary btn--small" href="#choose">
+          <span>Get started</span>
+          <span class="btn__icon" aria-hidden="true">&#8595;</span>
+        </a>
+
+      </div>
     </header>
 
     <main id="main">
-      <!-- 0. Hero ------------------------------------------------------------ -->
-      <section class="hero" id="top" data-theme="day" aria-labelledby="hero-title">
-        <div class="hero__anchor" data-anchor="hero">
-          <picture class="still" style="--k: 333%">
-            <source
-              type="image/avif"
-              srcset="/img/still-hero-520.avif 520w, /img/still-hero-1040.avif 1040w"
-              sizes="(max-width: 640px) 70vw, 34vw"
-            />
-            <img
-              src="/img/still-hero-1040.webp"
-              srcset="/img/still-hero-520.webp 520w, /img/still-hero-1040.webp 1040w"
-              sizes="(max-width: 640px) 70vw, 34vw"
-              alt=""
-              width="1040"
-              height="1040"
-              decoding="async"
-            />
-          </picture>
-        </div>
-        <div class="wrap hero__inner">
-          <h1 class="hero__title display" id="hero-title">
-            <span class="line"><span class="line__inner">Every line has</span></span>
-            <span class="line"><span class="line__inner">a history.</span></span>
+      <!-- Hero: what it is, in one line, with the recorder as the picture. ---------- -->
+      <section class="ov-hero" id="top" data-theme="day" aria-labelledby="hero-title">
+        <div class="wrap pt-center">
+          <p class="pt-eyebrow" data-enter style="--d: 0">Provenance</p>
+          <h1 class="pt-hero" id="hero-title" data-enter style="--d: 1">
+            Every line has a&nbsp;history.
           </h1>
-          <div class="hero__side">
-            <p class="lead hero__lead">
-              Provenance records how student code gets written, edit by edit, in a tamper-evident
-              log that travels with the submission.
-            </p>
-            <div class="actions hero__actions">
-              <a
-                class="btn btn--primary"
-                href="mailto:aaryanm@berkeley.edu?subject=Provenance%20for%20my%20course"
-              >
-                <span>Talk to us</span>
-                <span class="btn__icon" aria-hidden="true">&#8599;</span>
-              </a>
-              <a class="btn btn--ghost" href="https://github.com/ProvenanceTools">
-                <span>Read the source</span>
-              </a>
+          <p class="pt-sub" data-enter style="--d: 2">
+            Provenance records how student code comes to life, one edit at a time.
+          </p>
+          <div class="ov-hero__actions" data-enter style="--d: 3">
+            <a class="btn btn--primary" href="#choose">
+              <span>Get started</span>
+              <span class="btn__icon" aria-hidden="true">&#8595;</span>
+            </a>
+          </div>
+          <figure class="ov-hero__shot" data-enter style="--d: 4">
+          <div
+            class="preview"
+            role="img"
+            aria-label="A still preview of the recorder: the file scratch.py beside its log, scratch.slog"
+          >
+            <div class="preview__pane">
+              <div class="preview__bar mono"><span>scratch.py</span></div>
+              <pre class="preview__code mono">
+def greet(name):
+  # Type anything here. Then try pasting something,
+  # or click outside the editor and come back.
+  return "hello, " + name
+
+print(greet("Ada"))</pre>
+            </div>
+            <div class="preview__pane preview__pane--log">
+              <div class="preview__bar mono"><span>scratch.slog</span><span>23 events</span></div>
+              <ol class="preview__rows mono" role="list">
+                <li>
+                  <span>014</span><span class="k">doc.change<i> +"t"</i></span
+                  ><span class="h">8ac22c4f</span>
+                </li>
+                <li>
+                  <span>015</span><span class="k">doc.change<i> +"("</i></span
+                  ><span class="h">aadcf2b6</span>
+                </li>
+                <li>
+                  <span>016</span><span class="k">doc.change<i> +"\""</i></span
+                  ><span class="h">d29166db</span>
+                </li>
+                <li>
+                  <span>017</span><span class="k">doc.change<i> +"A"</i></span
+                  ><span class="h">34deca96</span>
+                </li>
+                <li>
+                  <span>018</span><span class="k">doc.change<i> +"d"</i></span
+                  ><span class="h">b7268dd4</span>
+                </li>
+                <li>
+                  <span>019</span><span class="k">doc.change<i> +"a"</i></span
+                  ><span class="h">dba1464f</span>
+                </li>
+                <li>
+                  <span>020</span><span class="k">doc.change<i> +"\""</i></span
+                  ><span class="h">c12af99a</span>
+                </li>
+                <li>
+                  <span>021</span><span class="k">doc.change<i> +")"</i></span
+                  ><span class="h">9202eac7</span>
+                </li>
+                <li>
+                  <span>022</span><span class="k">doc.change<i> +")"</i></span
+                  ><span class="h">35693a3f</span>
+                </li>
+              </ol>
             </div>
           </div>
+            <figcaption class="pt-small ov-hero__caption">
+              A tamper-evident history that travels with the submission, preserving more than
+              the final answer.
+            </figcaption>
+          </figure>
         </div>
       </section>
 
-      <!-- 1. Proof ----------------------------------------------------------- -->
-      <section class="proof" data-theme="day" aria-labelledby="proof-title">
-        <div class="wrap">
-          <h2 class="label" id="proof-title" data-fade>In use this semester at UC Berkeley</h2>
-          <ul class="proof__courses" role="list">
-            <li data-course>CS 61A</li>
-            <li data-course>CS 61B</li>
-            <li data-course>CS 61C</li>
-            <li data-course>CS 10</li>
-            <li data-course>DATA C88C</li>
+      <!-- Highlights: three numbers, then one mark per student. --------------------- -->
+      <section class="ov-stats pt-section" data-theme="day" aria-labelledby="stats-title">
+        <div class="wrap pt-center">
+          <p class="pt-eyebrow">In use this semester</p>
+          <h2 class="pt-h2" id="stats-title" data-split>Already in the classroom at UC&nbsp;Berkeley.</h2>
+          <dl class="ov-stats__row" data-fade>
+            <div class="pt-stat">
+              <dt class="pt-stat__cap">students recording their work</dt>
+              <dd class="pt-stat__num" data-count>2,800+</dd>
+            </div>
+            <div class="pt-stat">
+              <dt class="pt-stat__cap">courses</dt>
+              <dd class="pt-stat__num">5</dd>
+            </div>
+            <div class="pt-stat">
+              <dt class="pt-stat__cap">editors supported</dt>
+              <dd class="pt-stat__num">3</dd>
+            </div>
+          </dl>
+          <div class="cohort ov-stats__cohort" data-cohort aria-hidden="true"><canvas></canvas></div>
+          <ul class="ov-stats__courses" role="list" aria-label="Courses">
+            <li>CS 61A</li>
+            <li>CS 61B</li>
+            <li>CS 61C</li>
+            <li>CS 10</li>
+            <li>DATA C88C</li>
           </ul>
-          <div class="cohort" data-cohort aria-hidden="true"><canvas></canvas></div>
-          <p class="proof__stat" data-fade>
-            <span class="proof__number mono" data-count>2,800+</span>
-            <span class="proof__caption">students recording their work</span>
-          </p>
         </div>
       </section>
 
-      <!-- 2. Thesis ---------------------------------------------------------- -->
-      <section class="thesis" data-theme="night" aria-labelledby="thesis-title">
-        <div class="thesis__anchor" data-anchor="thesis"></div>
-        <div class="wrap thesis__inner">
-          <h2 class="thesis__title statement" id="thesis-title" data-split>
-            The finished file is the easiest part to fake.
-          </h2>
-          <p class="lead thesis__body" data-fade>
-            Similarity checkers compare final submissions, and AI tools now produce final
-            submissions on demand. What&rsquo;s much harder to produce is the afternoon behind one:
-            the false starts, the deleted lines, the test that finally passed at 11:40&nbsp;p.m.
-          </p>
-        </div>
-      </section>
-
-      <!-- 3. Same file, two histories --------------------------------------- -->
-      <section
-        class="histories"
-        id="histories"
-        data-theme="night"
-        aria-labelledby="histories-title"
-      >
+      <!-- Choose: who are you? Each card opens that audience's page. ---------------- -->
+      <section class="ov-choose pt-section" id="choose" data-theme="day" aria-labelledby="choose-title">
         <div class="wrap">
-          <header class="histories__head">
-            <h2 class="display-2" id="histories-title" data-split>Same file. Two histories.</h2>
-            <p class="lead" data-fade>
-              Both end in exactly the same bytes. Only one of them is an evening of work.
-            </p>
-          </header>
-          <figure class="records" data-records aria-describedby="records-desc">
-            <div class="records__axis mono" aria-hidden="true">
-              <div class="records__ticks" data-axis></div>
-              <span class="records__clock" data-clock>20:55</span>
-            </div>
-            <div class="record" data-record="written">
-              <div class="record__head">
-                <h3 class="record__title">An evening of work</h3>
-                <p class="record__stats mono">
-                  <span data-stat>633 edits</span><span data-stat>10 test runs</span
-                  ><span data-stat>0 pastes</span>
-                </p>
+          <div class="pt-center">
+            <h2 class="pt-h2" id="choose-title" data-split>Which one are you?</h2>
+            <p class="pt-sub" data-fade>Each has its own page, with just what you need.</p>
+          </div>
+          <div class="ov-choose__cards">
+            <a class="choice" href="students.html" data-fade>
+              <div class="choice__visual" aria-hidden="true">
+                <div class="mini-editor">
+                  <div class="mini-editor__bar mono">
+                    <span>hw03.py</span>
+                    <span class="mini-editor__rec">Recording</span>
+                  </div>
+                  <pre class="mini-editor__code mono"><span class="c">def</span> longest_flat(nums):
+    best = run = <span class="n">1</span>
+    <span class="c">for</span> a, b <span class="c">in</span> zip(nums, nums[<span class="n">1</span>:]):
+        run = run + <span class="n">1</span> <span class="c">if</span> a == b <span class="c">else</span> <span class="n">1</span><i class="mini-editor__caret"></i></pre>
+                </div>
+                <ul class="choice__chips mono" role="list">
+                  <li>VS Code</li>
+                  <li>JetBrains</li>
+                  <li>Neovim</li>
+                </ul>
               </div>
-              <div class="record__track" data-track></div>
-              <ol class="record__notes mono" data-notes role="list" aria-hidden="true"></ol>
-            </div>
-            <div class="record" data-record="pasted">
-              <div class="record__head">
-                <h3 class="record__title">Away, then one paste</h3>
-                <p class="record__stats mono">
-                  <span data-stat>1 edit</span><span data-stat>1 test run</span
-                  ><span data-stat>1 paste</span>
+              <div class="choice__text">
+                <p class="choice__who">For students</p>
+                <p class="pt-h3">I&rsquo;m a student.</p>
+                <p class="pt-body">
+                  Install the recorder and see exactly what it keeps, and what it never touches.
                 </p>
+                <span class="choice__go">Get set up</span>
               </div>
-              <div class="record__track" data-track></div>
-              <ol class="record__notes mono" data-notes role="list" aria-hidden="true"></ol>
-            </div>
-            <figcaption class="records__foot">
-              <p class="records__digests mono" aria-hidden="true">
-                <span>trails.py</span>
-                <span class="records__digest" data-digest></span>
-                <span class="records__eq">=</span>
-                <span class="records__digest" data-digest></span>
-              </p>
-              <p class="records__verdict">Identical files. Completely different records.</p>
-              <button class="records__replay mono" type="button" data-replay>Replay</button>
-              <span class="visually-hidden" id="records-desc">
-                Two recordings of the same assignment on one clock, 20:55 to 23:41. In the first, a
-                student types the file over the evening: 633 edits and 10 test runs, stuck for a
-                while on longest_flat, which they delete and write again, and every test passes at
-                23:40. In the second, the editor sits in the background for two and a half hours,
-                then the whole file arrives in a single 26-line paste. Both final files are
-                identical.
-              </span>
-            </figcaption>
-          </figure>
+            </a>
+
+            <a class="choice choice--ink" href="instructors.html" data-fade>
+              <div class="choice__visual" aria-hidden="true">
+                <div class="mini-hist">
+                  <div class="mini-hist__row">
+                    <p class="mini-hist__label mono"><span>An evening of work</span><span>633 edits</span></p>
+                    <svg class="mini-hist__track" viewBox="0 0 296 40" preserveAspectRatio="none">
+                      <line x1="0" y1="20" x2="296" y2="20" class="mini-hist__axis" />
+                      <rect x="4.0" y="15.0" width="2" height="10" rx="1" />
+                      <rect x="10.2" y="14.0" width="2" height="12" rx="1" />
+                      <rect x="15.5" y="17.0" width="2" height="6" rx="1" />
+                      <rect x="21.3" y="17.0" width="2" height="6" rx="1" />
+                      <rect x="25.7" y="17.0" width="2" height="6" rx="1" />
+                      <rect x="31.8" y="16.0" width="2" height="8" rx="1" />
+                      <rect x="35.1" y="14.0" width="2" height="12" rx="1" />
+                      <rect x="39.7" y="16.0" width="2" height="8" rx="1" />
+                      <rect x="43.2" y="14.0" width="2" height="12" rx="1" />
+                      <rect x="46.6" y="13.0" width="2" height="14" rx="1" />
+                      <rect x="50.2" y="16.0" width="2" height="8" rx="1" />
+                      <rect x="55.4" y="13.0" width="2" height="14" rx="1" />
+                      <rect x="61.6" y="13.0" width="2" height="14" rx="1" />
+                      <rect x="66.7" y="17.0" width="2" height="6" rx="1" />
+                      <rect x="73.0" y="17.0" width="2" height="6" rx="1" />
+                      <rect x="78.0" y="16.0" width="2" height="8" rx="1" />
+                      <rect x="82.1" y="16.0" width="2" height="8" rx="1" />
+                      <rect x="87.0" y="13.0" width="2" height="14" rx="1" />
+                      <rect x="91.2" y="9.0" width="2" height="22" rx="1" />
+                      <rect x="96.6" y="17.0" width="2" height="6" rx="1" />
+                      <rect x="101.7" y="11.0" width="2" height="18" rx="1" />
+                      <rect x="105.5" y="17.0" width="2" height="6" rx="1" />
+                      <rect x="110.4" y="17.0" width="2" height="6" rx="1" />
+                      <rect x="115.4" y="13.0" width="2" height="14" rx="1" />
+                      <rect x="119.3" y="11.0" width="2" height="18" rx="1" />
+                      <rect x="124.2" y="9.0" width="2" height="22" rx="1" />
+                      <rect x="128.4" y="13.0" width="2" height="14" rx="1" />
+                      <rect x="134.6" y="15.0" width="2" height="10" rx="1" />
+                      <rect x="138.7" y="9.0" width="2" height="22" rx="1" />
+                      <rect x="142.5" y="9.0" width="2" height="22" rx="1" />
+                      <rect x="146.5" y="13.0" width="2" height="14" rx="1" />
+                      <rect x="150.6" y="14.0" width="2" height="12" rx="1" />
+                      <rect x="156.6" y="11.0" width="2" height="18" rx="1" />
+                      <rect x="161.3" y="13.0" width="2" height="14" rx="1" />
+                      <rect x="167.6" y="17.0" width="2" height="6" rx="1" />
+                      <rect x="172.4" y="16.0" width="2" height="8" rx="1" />
+                      <rect x="178.1" y="16.0" width="2" height="8" rx="1" />
+                      <rect x="184.3" y="14.0" width="2" height="12" rx="1" />
+                      <rect x="187.6" y="11.0" width="2" height="18" rx="1" />
+                      <rect x="191.0" y="13.0" width="2" height="14" rx="1" />
+                      <rect x="196.1" y="9.0" width="2" height="22" rx="1" />
+                      <rect x="200.3" y="11.0" width="2" height="18" rx="1" />
+                      <rect x="204.6" y="14.0" width="2" height="12" rx="1" />
+                      <rect x="209.6" y="14.0" width="2" height="12" rx="1" />
+                      <rect x="213.1" y="17.0" width="2" height="6" rx="1" />
+                      <rect x="219.3" y="14.0" width="2" height="12" rx="1" />
+                      <rect x="224.7" y="17.0" width="2" height="6" rx="1" />
+                      <rect x="228.1" y="11.0" width="2" height="18" rx="1" />
+                      <rect x="232.3" y="13.0" width="2" height="14" rx="1" />
+                      <rect x="238.7" y="9.0" width="2" height="22" rx="1" />
+                      <rect x="243.3" y="11.0" width="2" height="18" rx="1" />
+                      <rect x="247.7" y="11.0" width="2" height="18" rx="1" />
+                      <rect x="252.0" y="14.0" width="2" height="12" rx="1" />
+                      <rect x="256.4" y="13.0" width="2" height="14" rx="1" />
+                      <rect x="260.0" y="17.0" width="2" height="6" rx="1" />
+                      <rect x="263.9" y="15.0" width="2" height="10" rx="1" />
+                      <rect x="267.5" y="16.0" width="2" height="8" rx="1" />
+                      <rect x="271.9" y="9.0" width="2" height="22" rx="1" />
+                      <rect x="276.7" y="16.0" width="2" height="8" rx="1" />
+                      <rect x="281.4" y="13.0" width="2" height="14" rx="1" />
+                      <rect x="285.5" y="16.0" width="2" height="8" rx="1" />
+                      <rect x="291.3" y="9.0" width="2" height="22" rx="1" />
+                    </svg>
+                  </div>
+                  <div class="mini-hist__row">
+                    <p class="mini-hist__label mono"><span>Away, then one paste</span><span>1 paste</span></p>
+                    <svg class="mini-hist__track" viewBox="0 0 296 40" preserveAspectRatio="none">
+                      <line x1="0" y1="20" x2="296" y2="20" class="mini-hist__axis mini-hist__axis--away" />
+                      <rect x="266" y="6" width="26" height="28" rx="4" class="mini-hist__paste" />
+                    </svg>
+                  </div>
+                  <p class="mini-hist__verdict mono">same file &middot; different history</p>
+                </div>
+              </div>
+              <div class="choice__text">
+                <p class="choice__who">For instructors &amp; TAs</p>
+                <p class="pt-h3">I teach or TA a course.</p>
+                <p class="pt-body">See how submitted work was written, not just how it ended.</p>
+                <span class="choice__go">See how it works</span>
+              </div>
+            </a>
+          </div>
         </div>
       </section>
 
-      <!-- 4. The chain: the mark becomes a chain, breaks, and you try ---------- -->
-      <section class="how" id="how" data-theme="night" aria-label="How it works">
-        <div class="how__sticky">
-          <div class="how__anchor how__anchor--mark" data-anchor="mark"></div>
-          <div class="how__anchor" data-anchor="chain"></div>
-          <picture class="still still--cover" style="--k: none">
-            <source
-              type="image/avif"
-              srcset="/img/still-chain-960.avif 960w, /img/still-chain-1920.avif 1920w"
-              sizes="100vw"
-            />
-            <img
-              src="/img/still-chain-1920.webp"
-              srcset="/img/still-chain-960.webp 960w, /img/still-chain-1920.webp 1920w"
-              sizes="100vw"
-              alt=""
-              width="1920"
-              height="1080"
-              loading="lazy"
-              decoding="async"
-            />
-          </picture>
-
-          <div class="how__copy" data-phase="chain">
-            <h2 class="display-2" data-split>Every edit is a link.</h2>
-            <p class="lead">
-              Every change, paste and save is sealed to the one before it, in one unbroken line from
-              the first keystroke to the hand-in. Along the way the recorder signs checkpoints, like
-              the gold link.
-            </p>
-          </div>
-
-          <div class="how__copy" data-phase="tamper">
-            <h2 class="display-2" data-split>Change one link, and the chain says so.</h2>
-            <p class="lead">
-              Rewrite one event and its seal stops matching. So does every event after it.
-            </p>
-          </div>
-
-          <div class="how__copy" data-phase="cover">
-            <h2 class="display-2" data-split>Covering it up doesn&rsquo;t work either.</h2>
-            <p class="lead">
-              Reseal everything after the edit and the chain looks whole again, until the signed
-              checkpoint. That signature can&rsquo;t be redone.
-            </p>
-          </div>
-
-          <div class="ledger">
-            <div class="ledger__head mono">
-              <span>trails.slog</span>
-              <span class="ledger__status" id="chain-status" role="status" aria-live="polite"
-                >Chain verified.</span
-              >
-            </div>
-            <ol class="ledger__rows mono" data-ticker role="list" aria-hidden="true"></ol>
-          </div>
-        </div>
-      </section>
-
-      <!-- The relight: night becomes day ------------------------------------- -->
-      <div class="relight" aria-hidden="true"></div>
-
-      <!-- 5. Built not to accuse ---------------------------------------------- -->
-      <section class="fair" id="fair" data-theme="day" aria-labelledby="fair-title">
-        <div class="wrap fair__top">
-          <div class="fair__copy">
-            <h2 class="display-2" id="fair-title" data-split>Built not to accuse.</h2>
-            <p class="lead" data-fade>
-              Provenance points a person at the moments worth a look. Honest work stays out of the
-              way.
-            </p>
-          </div>
-          <div class="fair__anchor" data-anchor="day">
-            <picture class="still" style="--k: 467%">
-              <source
-                type="image/avif"
-                srcset="/img/still-day-700.avif 700w, /img/still-day-1400.avif 1400w"
-                sizes="(max-width: 900px) 80vw, 46vw"
-              />
-              <img
-                src="/img/still-day-1400.webp"
-                srcset="/img/still-day-700.webp 700w, /img/still-day-1400.webp 1400w"
-                sizes="(max-width: 900px) 80vw, 46vw"
-                alt=""
-                width="1400"
-                height="1400"
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
-          </div>
-        </div>
-
-        <div class="wrap principles">
-          <article class="principle" data-fade>
-            <h3 class="principle__title">Moving your own code isn&rsquo;t copying.</h3>
-            <p>
-              A paste that matches code you already typed is recognized as a move. It drops out of
-              the review queue, and stays on the record.
-            </p>
-            <div class="flag" data-flag aria-hidden="true">
-              <span class="flag__level mono" data-flag-level>high</span>
-              <span class="flag__text" data-flag-text>Paste of 6 lines into trails.py</span>
-            </div>
-          </article>
-          <article class="principle" data-fade>
-            <h3 class="principle__title">Missing evidence is never evidence.</h3>
-            <p>
-              A check that can&rsquo;t run reports that it was skipped. It never reports a failure
-              it couldn&rsquo;t see.
-            </p>
-            <div class="checks mono" aria-hidden="true">
-              <span><i class="is-ok"></i>chain intact</span>
-              <span><i class="is-ok"></i>seal valid</span>
-              <span><i class="is-skipped"></i>checkpoints: skipped</span>
-            </div>
-          </article>
-          <article class="principle" data-fade>
-            <h3 class="principle__title">Your course sets the rules.</h3>
-            <p>
-              Staff can weight or switch off every signal, and a course can turn some kinds of
-              capture off before anything is recorded.
-            </p>
-          </article>
-          <article class="principle" data-fade>
-            <h3 class="principle__title">A person decides.</h3>
-            <p>Every flag opens the exact moment in the replay. Nothing happens automatically.</p>
-          </article>
-        </div>
-
-        <div class="wrap fair__pull">
-          <p class="pull" data-fade><strong>A flag is a question, not a verdict.</strong></p>
-        </div>
-      </section>
-
-      <!-- 6. See the process -------------------------------------------------- -->
-      <section class="insight" data-theme="day" aria-labelledby="insight-title">
-        <div class="emboss" aria-hidden="true"></div>
-        <div class="wrap">
-          <div class="insight__copy">
-            <h2 class="display-2" id="insight-title" data-split>
-              Grade the work. See the process.
-            </h2>
-            <p class="lead" data-fade>
-              The replay shows where a student got stuck, what they tried, and when it clicked.
-              Office hours can start from the actual evening, not a guess about it.
-            </p>
-          </div>
-          <figure class="evening" data-evening>
-            <div class="evening__plot" data-evening-plot aria-hidden="true"></div>
-            <div class="evening__axis mono" data-evening-axis aria-hidden="true"></div>
-            <figcaption class="visually-hidden">
-              The first history, annotated: stuck on longest_flat for about forty minutes across six
-              failing test runs, away for nine minutes, the function deleted and rewritten, and
-              every test passing at 23:40.
-            </figcaption>
-          </figure>
-        </div>
-      </section>
-
-      <!-- The suite -------------------------------------------------------- -->
-      <section class="suite" id="suite" data-theme="day" aria-labelledby="suite-title">
-        <div class="wrap">
-          <div class="suite__copy">
-            <h2 class="display-2" id="suite-title" data-split>One record. Every tool.</h2>
-            <p class="lead" data-fade>
-              Three editors write the same signed log. Everything downstream reads it. Every piece
-              is open source.
-            </p>
-          </div>
-
-          <div class="suite__map" data-suite>
-            <svg class="suite__wires" data-wires aria-hidden="true"></svg>
-
-            <div class="suite__col">
-              <p class="suite__stage mono">Record</p>
-              <a
-                class="tool"
-                data-node="code"
-                href="https://marketplace.visualstudio.com/items?itemName=itsgeagle.provenance-recorder"
-              >
-                <span class="tool__code mono">provcode</span>
-                <span class="tool__name">Provenance for VS&nbsp;Code</span>
-                <span class="tool__line"
-                  >The original recorder. On the VS&nbsp;Code Marketplace.</span
-                >
-              </a>
-              <a
-                class="tool"
-                data-node="jet"
-                href="https://plugins.jetbrains.com/plugin/32944-provenance-recorder/"
-              >
-                <span class="tool__code mono">provjet</span>
-                <span class="tool__name">Provenance for JetBrains</span>
-                <span class="tool__line"
-                  >IntelliJ, PyCharm, CLion and the rest. On the JetBrains Marketplace.</span
-                >
-              </a>
-              <a
-                class="tool"
-                data-node="nvim"
-                href="https://github.com/ProvenanceTools/provenance-neovim-recorder"
-              >
-                <span class="tool__code mono">provnvim</span>
-                <span class="tool__name">Provenance for Neovim</span>
-                <span class="tool__line">Pure Lua, no native dependencies.</span>
-              </a>
-            </div>
-
-            <div class="suite__col suite__col--mid">
-              <p class="suite__stage mono">Hand in</p>
-              <div class="tool tool--bundle" data-node="bundle">
-                <svg class="mark tool__mark" viewBox="40 64 176 124" aria-hidden="true">
-                  <defs>
-                    <clipPath id="suite-cross">
-                      <rect x="96" y="50" width="64" height="78" />
-                    </clipPath>
-                  </defs>
+      <div class="site-foot" data-theme="day">
+          <footer class="foot wrap">
+            <a class="foot__brand" href="./" aria-label="Provenance, overview">
+              <svg class="mark" viewBox="40 64 176 124" aria-hidden="true">
+                <defs>
+                  <clipPath id="foot-cross"><rect x="96" y="50" width="64" height="78" /></clipPath>
+                </defs>
+                <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
+                <rect class="mark__accent" x="110" y="74" width="96" height="104" rx="34" />
+                <g clip-path="url(#foot-cross)">
                   <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
-                  <rect class="mark__accent" x="110" y="74" width="96" height="104" rx="34" />
-                  <g clip-path="url(#suite-cross)">
-                    <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
-                  </g>
-                </svg>
-                <span class="tool__name">The signed bundle</span>
-                <span class="tool__line"
-                  >The log, sealed with a per-session key. One format, from every editor.</span
+                </g>
+              </svg>
+              <span class="wordmark">Provenance</span>
+            </a>
+            <ul class="foot__links" role="list">
+              <li>
+                <a href="mailto:aaryanm@berkeley.edu?subject=Provenance%20for%20my%20course"
+                  >Talk to us</a
                 >
-              </div>
-              <a
-                class="tool"
-                data-node="gate"
-                href="https://github.com/ProvenanceTools/provenance-gradescope-gateway"
-              >
-                <span class="tool__code mono">provgate</span>
-                <span class="tool__name">Gradescope gateway</span>
-                <span class="tool__line"
-                  >Pulls new submissions from Gradescope into the server, on a schedule.</span
-                >
-              </a>
-            </div>
-
-            <div class="suite__col">
-              <p class="suite__stage mono">Check</p>
-              <div class="tool" data-node="server">
-                <span class="tool__code mono">provd</span>
-                <span class="tool__name">Provenance server</span>
-                <span class="tool__line">
-                  Ingests a cohort, verifies every chain, keeps the log and drops the source.
-                </span>
-              </div>
-            </div>
-
-            <div class="suite__col">
-              <p class="suite__stage mono">Review</p>
-              <div class="tool" data-node="lens">
-                <span class="tool__code mono">provlens</span>
-                <span class="tool__name">Provenance analyzer</span>
-                <span class="tool__line">
-                  The cohort, the replay, and every signal. It can also run entirely in a browser,
-                  on a single dropped file.
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 7. One folder ------------------------------------------------------- -->
-      <section class="privacy" id="students" data-theme="day" aria-labelledby="privacy-title">
-        <div class="wrap">
-          <div class="privacy__copy">
-            <h2 class="display-2" id="privacy-title" data-split>One folder. Nothing else.</h2>
-            <p class="lead" data-fade>
-              If you did the work, the record is the best evidence you have that you did.
-            </p>
-          </div>
-          <div class="field" data-field aria-hidden="true"></div>
-
-          <div class="sees">
-            <div class="sees__col" data-fade>
-              <h3 class="sees__head mono">Recorded</h3>
-              <ul role="list">
-                <li>Edits and pastes in the assignment folder</li>
-                <li>Saves, opened files and editor focus</li>
-                <li>Commands run in the editor&rsquo;s terminal</li>
-                <li>Which editor extensions are installed</li>
-              </ul>
-            </div>
-            <div class="sees__col sees__col--never" data-fade>
-              <h3 class="sees__head mono">Never recorded</h3>
-              <ul role="list">
-                <li>Your browser, screen, camera or other projects</li>
-                <li>Keystrokes at the system level</li>
-                <li>Your clipboard, unless you paste into the work</li>
-              </ul>
-            </div>
-          </div>
-
-          <ul class="pledges" role="list" data-fade>
-            <li><strong>Offline.</strong> No network requests while you work.</li>
-            <li>
-              <strong>Yours to read.</strong> The log is plain text, on your computer until you hand
-              it in.
-            </li>
-
-            <li>
-              <strong>Not forever.</strong> Stored logs are deleted on a schedule your school sets.
-            </li>
-          </ul>
-
-          <div class="privacy__foot" data-fade>
-            <p class="privacy__get mono">Get the recorder</p>
-            <ul class="editors" role="list">
+              </li>
+              <li><a href="https://github.com/ProvenanceTools">GitHub</a></li>
               <li>
                 <a
-                  href="https://marketplace.visualstudio.com/items?itemName=itsgeagle.provenance-recorder"
-                  >VS&nbsp;Code <span aria-hidden="true">&#8599;</span></a
+                  href="students.html#get"
+                  >Install guide</a
                 >
               </li>
               <li>
-                <a href="https://plugins.jetbrains.com/plugin/32944-provenance-recorder/"
-                  >JetBrains <span aria-hidden="true">&#8599;</span></a
-                >
-              </li>
-              <li>
-                <a href="https://github.com/ProvenanceTools/provenance-neovim-recorder"
-                  >Neovim <span aria-hidden="true">&#8599;</span></a
+                <a href="guide.html#administration"
+                  >Admin guide</a
                 >
               </li>
             </ul>
-            <a
-              class="btn btn--ink"
-              href="https://github.com/ProvenanceTools/provenance/blob/main/docs/student-guide.md"
-            >
-              <span>Install guide</span>
-              <span class="btn__icon" aria-hidden="true">&#8599;</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- 8. Try it ----------------------------------------------------------- -->
-      <section class="tryit" data-theme="day" aria-labelledby="tryit-title">
-        <div class="tryit__sticky">
-          <div class="wrap tryit__inner">
-            <div class="tryit__copy">
-              <h2 class="display-2" id="tryit-title" data-split>See it for yourself.</h2>
-              <p class="lead" data-fade>
-                Type something. Paste something. Click away and come back. The record writes itself
-                alongside.
-              </p>
-            </div>
-            <div class="tryit__slot" data-slot aria-hidden="true"></div>
-            <div class="playground" data-playground>
-              <div class="playground__editor">
-                <div class="playground__bar mono">
-                  <span class="playground__file"
-                    >scratch.py
-                    <span class="playground__status" aria-hidden="true"
-                      ><span class="playground__hint">click to type</span
-                      ><span class="playground__live">recording</span></span
-                    ></span
-                  >
-                  <button class="playground__replay mono" type="button" data-replay>Replay</button>
-                </div>
-                <label class="visually-hidden" for="scratch"
-                  >A small code editor whose edits are recorded on this page</label
-                >
-                <textarea
-                  id="scratch"
-                  class="playground__input mono"
-                  spellcheck="false"
-                  autocapitalize="off"
-                  autocomplete="off"
-                  data-input
-                ></textarea>
-              </div>
-              <div class="playground__log">
-                <div class="playground__bar mono">
-                  <span>scratch.slog</span>
-                  <span data-log-status>0 events</span>
-                </div>
-                <ol class="playground__rows mono" data-log role="log" aria-live="off"></ol>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 8. Limits ---------------------------------------------------------- -->
-      <section class="limits" data-theme="day" aria-labelledby="limits-title">
-        <div class="wrap limits__inner">
-          <h2 class="display-2" id="limits-title" data-split>What it can&rsquo;t do.</h2>
-          <p class="lead" data-fade>
-            No log is impossible to forge, and our own design documents say so. Provenance makes the
-            easy shortcuts leave marks, and the hard ones cost more than doing the work. The source
-            is public, and the design assumes it.
-          </p>
-          <blockquote class="quote" data-fade>
-            <p>
-              &ldquo;We will know if you do something obvious, and we will know enough to ask
-              questions if you do something subtle.&rdquo;
-            </p>
-            <footer class="mono">From the Provenance design document</footer>
-          </blockquote>
-        </div>
-      </section>
-
-      <!-- 9. Close ----------------------------------------------------------- -->
-      <section class="close" data-theme="signal" aria-labelledby="close-title">
-        <div class="close__anchor" data-anchor="close">
-          <picture class="still" style="--k: 333%">
-            <source
-              type="image/avif"
-              srcset="/img/still-close-520.avif 520w, /img/still-close-1040.avif 1040w"
-              sizes="(max-width: 900px) 50vw, 30vw"
-            />
-            <img
-              src="/img/still-close-1040.webp"
-              srcset="/img/still-close-520.webp 520w, /img/still-close-1040.webp 1040w"
-              sizes="(max-width: 900px) 50vw, 30vw"
-              alt=""
-              width="1040"
-              height="1040"
-              loading="lazy"
-              decoding="async"
-            />
-          </picture>
-        </div>
-        <div class="wrap close__inner">
-          <h2 class="close__title display" id="close-title" data-split>
-            Bring Provenance<br />
-            to your course.
-          </h2>
-          <p class="lead close__lead" data-fade>
-            It&rsquo;s open source, and it already runs at the scale of a large intro course. Tell
-            us about yours.
-          </p>
-          <div class="actions" data-fade>
-            <a
-              class="btn btn--ink"
-              href="mailto:aaryanm@berkeley.edu?subject=Provenance%20for%20my%20course"
-            >
-              <span>Talk to us</span>
-              <span class="btn__icon" aria-hidden="true">&#8599;</span>
-            </a>
-            <a class="btn btn--outline" href="https://github.com/ProvenanceTools">
-              <span>Read the source</span>
-            </a>
-          </div>
-        </div>
-
-        <footer class="foot wrap">
-          <a class="foot__brand" href="#top" aria-label="Provenance, back to top">
-            <svg class="mark" viewBox="40 64 176 124" aria-hidden="true">
-              <defs>
-                <clipPath id="foot-cross"><rect x="96" y="50" width="64" height="78" /></clipPath>
-              </defs>
-              <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
-              <rect class="mark__accent" x="110" y="74" width="96" height="104" rx="34" />
-              <g clip-path="url(#foot-cross)">
-                <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
-              </g>
-            </svg>
-            <span class="wordmark">Provenance</span>
-          </a>
-          <ul class="foot__links" role="list">
-            <li><a href="https://github.com/ProvenanceTools">GitHub</a></li>
-            <li>
-              <a
-                href="https://github.com/ProvenanceTools/provenance/blob/main/docs/student-guide.md"
-                >Install guide</a
-              >
-            </li>
-            <li>
-              <a href="https://github.com/ProvenanceTools/provenance/blob/main/docs/admin-guide.md"
-                >Admin guide</a
-              >
-            </li>
-          </ul>
-          <p class="foot__made">Built at UC Berkeley.</p>
-        </footer>
-      </section>
+            <p class="foot__made">Open source · Built at UC Berkeley.</p>
+          </footer>
+      </div>
     </main>
 
     <script type="module" src="/src/main.ts"></script>

@@ -1,0 +1,707 @@
+/* The guide: one calm page, one topic open at a time.
+   Loaded only by guide.html, after the shared styles. Type comes from the shared page-type
+   classes (pt-*); this file sets layout, the topic bar, steps, commands and screenshots. */
+
+/* ------------------------------------------------------------ which text shows */
+
+/* The head script puts the topic and editor from the address on <html>, so the right text
+   is there from the first frame. Without JavaScript everything is shown, in order. */
+.js .gd-panel {
+  display: none;
+}
+.js[data-topic='installation'] .gd-panel[data-topic='installation'],
+.js[data-topic='troubleshooting'] .gd-panel[data-topic='troubleshooting'],
+.js[data-topic='instructors'] .gd-panel[data-topic='instructors'],
+.js[data-topic='administration'] .gd-panel[data-topic='administration'] {
+  display: block;
+}
+.js[data-ide='vscode'] [data-for]:not([data-for='vscode']),
+.js[data-ide='jetbrains'] [data-for]:not([data-for='jetbrains']),
+.js[data-ide='neovim'] [data-for]:not([data-for='neovim']) {
+  display: none;
+}
+.no-js .gd-topics,
+.no-js .gd-seg {
+  display: none;
+}
+.no-js .gd-panel + .gd-panel {
+  margin-top: clamp(64px, 10vh, 120px);
+}
+
+/* ------------------------------------------------------------------ site bar */
+
+/* The guide has its own topic bar, so the site bar here is only the logo.
+   It scrolls away, and the topic bar takes the top. */
+.page-guide .nav {
+  position: absolute;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+@media (max-width: 640px) {
+  :root:has(.page-guide) {
+    --nav-h: 64px;
+  }
+}
+
+/* --------------------------------------------------------------- topic bar */
+
+.gd-topics {
+  position: sticky;
+  top: 0;
+  z-index: calc(var(--z-nav) - 1);
+  height: 52px;
+  --focus: var(--blue);
+  color: var(--ink);
+  background: rgb(247 247 245 / 0.84);
+  box-shadow: 0 1px 0 rgb(4 30 66 / 0.08);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+.gd-topics__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 100%;
+  padding: 0 var(--gutter);
+}
+.gd-topics__title {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.gd-topics__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(0px, 1.4vw, 20px);
+  min-width: 0;
+  margin-right: -10px;
+}
+.gd-topics__links a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 10px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: rgb(4 30 66 / 0.68);
+  transition: color 0.3s var(--ease-soft);
+}
+.gd-topics__links a:hover {
+  color: var(--ink);
+}
+.gd-topics__links a::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 7px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 0.4s var(--ease-out);
+}
+/* The open topic: darker, with a short gold rule. Driven by the address, so no flash. */
+.js[data-topic='installation'] [data-topic-link='installation'],
+.js[data-topic='troubleshooting'] [data-topic-link='troubleshooting'],
+.js[data-topic='instructors'] [data-topic-link='instructors'],
+.js[data-topic='administration'] [data-topic-link='administration'] {
+  color: var(--ink);
+}
+.js[data-topic='installation'] [data-topic-link='installation']::after,
+.js[data-topic='troubleshooting'] [data-topic-link='troubleshooting']::after,
+.js[data-topic='instructors'] [data-topic-link='instructors']::after,
+.js[data-topic='administration'] [data-topic-link='administration']::after {
+  transform: scaleX(1);
+}
+.gd-short {
+  display: none;
+}
+/* Two pairs: Installation with Troubleshooting, For Instructors with Administration. The
+   first of each pair is the one most people come for, so it reads a little stronger. */
+.gd-topics__links li:nth-child(odd) a {
+  font-weight: 600;
+  color: rgb(4 30 66 / 0.86);
+}
+.gd-topics__links .gd-group-start {
+  margin-left: clamp(8px, 1.4vw, 20px);
+  padding-left: clamp(8px, 1.4vw, 20px);
+  border-left: 1px solid rgb(4 30 66 / 0.16);
+}
+
+/* ------------------------------------------------------------------- header */
+
+.gd-head {
+  display: grid;
+  justify-items: center;
+  gap: 0;
+  padding: clamp(48px, 8vh, 96px) var(--gutter) clamp(28px, 5vh, 52px);
+  text-align: center;
+}
+.gd-head .pt-eyebrow {
+  margin-bottom: 8px;
+}
+.gd-head .pt-sub {
+  max-width: 36ch;
+}
+
+.gd-body {
+  width: min(100% - 2 * var(--gutter), 760px);
+  margin: 0 auto;
+  padding-bottom: clamp(72px, 12vh, 140px);
+}
+.gd-body p,
+.gd-body li {
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  letter-spacing: -0.008em;
+  color: rgb(4 30 66 / 0.78);
+}
+.gd-body strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+.gd-body a:not(.btn):not(.pt-link) {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgb(0 38 118 / 0.35);
+}
+.gd-body a:not(.btn):not(.pt-link):hover {
+  text-decoration-color: currentColor;
+}
+.gd-body code,
+.gd-body kbd {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  color: var(--ink);
+}
+.gd-body code {
+  padding: 0.1em 0.38em;
+  border-radius: 6px;
+  background: rgb(4 30 66 / 0.06);
+  overflow-wrap: anywhere;
+}
+.gd-body kbd {
+  padding: 0.08em 0.45em;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow:
+    0 1px 0 rgb(4 30 66 / 0.14),
+    inset 0 0 0 1px rgb(4 30 66 / 0.12);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------- steps */
+
+.gd-steps {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+.gd-step {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  column-gap: 18px;
+  align-content: start;
+  padding: clamp(24px, 3.4vh, 34px) 0;
+  border-top: 1px solid var(--hair);
+}
+.gd-step::before {
+  content: counter(step);
+  grid-row: 1 / span 40;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--porcelain);
+  background: var(--blue);
+}
+.gd-step > * {
+  grid-column: 2;
+  min-width: 0;
+}
+.gd-step__title {
+  margin: 3px 0 8px;
+  color: var(--ink);
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+}
+.gd-step p + p,
+.gd-step p + .gd-codewrap,
+.gd-step .gd-codewrap + p {
+  margin-top: 10px;
+}
+/* A note between steps, not a step of its own. */
+.gd-aside {
+  padding: 18px 0 18px 50px;
+  border-top: 1px solid var(--hair);
+}
+.gd-aside p {
+  font-size: 0.9375rem;
+}
+.gd-aside-text,
+.gd-body .gd-aside-text {
+  font-size: 0.9375rem;
+  color: rgb(4 30 66 / 0.66);
+}
+.gd-links {
+  margin-top: 12px;
+}
+.gd-links .pt-link {
+  min-height: 44px;
+}
+.gd-warn {
+  margin: 14px 0;
+  padding: 4px 0 4px 16px;
+  border-left: 3px solid var(--gold);
+}
+.gd-body .gd-warn {
+  font-weight: 500;
+  color: var(--ink);
+}
+.gd-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 1.15em;
+}
+
+/* ---------------------------------------------------------- editor switcher */
+
+.gd-seg {
+  display: inline-flex;
+  gap: 2px;
+  margin-top: 14px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgb(4 30 66 / 0.06);
+}
+.gd-seg button {
+  min-height: 40px;
+  padding: 0 clamp(14px, 3vw, 22px);
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: rgb(4 30 66 / 0.72);
+  transition:
+    color 0.3s var(--ease-soft),
+    background-color 0.3s var(--ease-soft),
+    box-shadow 0.3s var(--ease-soft);
+}
+.gd-seg button:hover {
+  color: var(--ink);
+}
+.gd-seg button:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+.js[data-ide='vscode'] [data-ide-tab='vscode'],
+.js[data-ide='jetbrains'] [data-ide-tab='jetbrains'],
+.js[data-ide='neovim'] [data-ide-tab='neovim'] {
+  color: var(--ink);
+  font-weight: 600;
+  background: var(--porcelain);
+  box-shadow:
+    0 1px 2px rgb(4 30 66 / 0.12),
+    inset 0 0 0 1px rgb(4 30 66 / 0.06);
+}
+.gd-body > .gd-seg {
+  margin: 0 0 8px;
+}
+
+/* ---------------------------------------------------------------- what you need */
+
+.gd-need {
+  margin-bottom: clamp(20px, 3vh, 32px);
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: rgb(4 30 66 / 0.04);
+}
+.gd-need__head {
+  margin-bottom: 8px;
+  font-family: var(--mono);
+  font-size: 0.8125rem !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(4 30 66 / 0.62) !important;
+}
+.gd-need ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding-left: 1.1em;
+}
+
+/* ---------------------------------------------------------- commands, pictures */
+
+.gd-codewrap {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 10px 0;
+  padding: 6px 8px 6px 0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgb(4 30 66 / 0.12);
+}
+.gd-code {
+  margin: 10px 0;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgb(4 30 66 / 0.12);
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--ink);
+  /* Commands wrap, so none is ever cut off; what Copy puts on the clipboard is unchanged. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  tab-size: 2;
+}
+.gd-codewrap .gd-code {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 8px 8px 16px;
+  background: none;
+  box-shadow: none;
+}
+.gd-code code {
+  padding: 0;
+  background: none;
+  font-size: inherit;
+  overflow-wrap: normal;
+}
+.gd-copy {
+  flex: none;
+  align-self: flex-start;
+  margin-top: 4px;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--blue);
+  background: var(--day-0);
+  box-shadow: inset 0 0 0 1px rgb(4 30 66 / 0.14);
+  transition: background-color 0.3s var(--ease-soft);
+}
+.gd-copy:hover {
+  background: var(--day-1);
+}
+.gd-copy:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+.gd-code-label {
+  margin: 16px 0 -2px;
+  font-size: 0.875rem !important;
+  font-weight: 600;
+  color: var(--ink) !important;
+}
+.gd-shot {
+  margin: 16px 0 6px;
+}
+.gd-shot img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow:
+    0 1px 2px rgb(4 30 66 / 0.08),
+    0 0 0 1px rgb(4 30 66 / 0.1);
+}
+.gd-shot figcaption {
+  margin-top: 8px;
+  font-size: 0.875rem;
+  color: rgb(4 30 66 / 0.62);
+}
+
+/* ZIP or Git: two ways to hand in, one under the other. */
+.gd-fork {
+  display: grid;
+  gap: 24px;
+  margin-top: 18px;
+}
+.gd-fork > div {
+  padding-top: 16px;
+  border-top: 2px solid var(--gold);
+}
+.gd-fork h3 {
+  margin-bottom: 6px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+/* --------------------------------------------------------- questions and answers */
+
+.gd-sub {
+  margin-top: clamp(48px, 8vh, 80px);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.028em;
+}
+.gd-lede {
+  margin: 8px 0 16px;
+}
+.gd-qas {
+  margin-top: 8px;
+  border-bottom: 1px solid var(--hair);
+}
+.gd-qa {
+  border-top: 1px solid var(--hair);
+}
+.gd-qa summary {
+  position: relative;
+  min-height: 44px;
+  padding: 16px 36px 16px 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+  cursor: pointer;
+  list-style: none;
+}
+.gd-qa summary::-webkit-details-marker {
+  display: none;
+}
+.gd-qa summary::after {
+  content: '';
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid rgb(4 30 66 / 0.55);
+  border-bottom: 2px solid rgb(4 30 66 / 0.55);
+  transform: translateY(-70%) rotate(45deg);
+  transition: transform 0.3s var(--ease-out);
+}
+.gd-qa[open] summary::after {
+  transform: translateY(-30%) rotate(225deg);
+}
+.gd-qa summary:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+.gd-qa > div {
+  padding: 0 0 18px;
+}
+.gd-qa > div > * + * {
+  margin-top: 10px;
+}
+.gd-qa ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 1.15em;
+}
+
+/* ---------------------------------------------------------------------- links */
+
+.gd-more {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  margin-top: clamp(40px, 7vh, 64px);
+  padding-top: 22px;
+  border-top: 1px solid var(--hair);
+}
+.gd-more__head {
+  font-family: var(--mono);
+  font-size: 0.8125rem !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(4 30 66 / 0.62) !important;
+}
+.gd-more ul {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.gd-more li a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  font-weight: 500;
+}
+.gd-more li a::after {
+  content: '\2197';
+  margin-left: 6px;
+  font-size: 0.85em;
+  opacity: 0.6;
+}
+.gd-more li a[href^='#']::after {
+  content: '\203A';
+  font-size: 1.15em;
+}
+.gd-more--lead {
+  gap: 16px;
+}
+.gd-cta {
+  margin-top: clamp(32px, 5vh, 48px);
+}
+
+/* ------------------------------------------------------------- small screens */
+
+@media (max-width: 640px) {
+  .gd-topics {
+    height: 48px;
+  }
+  .gd-topics__title {
+    display: none;
+  }
+  .gd-topics__bar {
+    padding-right: calc(var(--gutter) - 6px);
+  }
+  .gd-topics__links {
+    flex: 1;
+    gap: 0;
+    margin-left: -8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .gd-topics__links::-webkit-scrollbar {
+    display: none;
+  }
+  .gd-topics__links a {
+    padding: 0 8px;
+    font-size: 0.875rem;
+  }
+  .gd-topics__links .gd-group-start {
+    margin-left: 4px;
+    padding-left: 4px;
+  }
+  .gd-topics__links a::after {
+    left: 8px;
+    right: 8px;
+  }
+  .gd-full {
+    display: none;
+  }
+  .gd-short {
+    display: inline;
+  }
+  .gd-step {
+    grid-template-columns: 28px minmax(0, 1fr);
+    column-gap: 14px;
+  }
+  .gd-step::before {
+    width: 28px;
+    height: 28px;
+    font-size: 0.875rem;
+  }
+  .gd-aside {
+    padding-left: 42px;
+  }
+  .gd-need {
+    padding: 16px 18px;
+  }
+  .gd-seg {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+  }
+  .gd-seg button {
+    padding: 0 8px;
+  }
+}
+@media (max-width: 400px) {
+  .gd-topics__links a {
+    padding: 0 6px;
+    font-size: 0.8125rem;
+  }
+}
+
+/* ------------------------------------------------- administration: keys and manifests */
+
+/* Named places inside a topic land clear of the sticky topic bar. */
+.gd-body [data-section] {
+  scroll-margin-top: 72px;
+}
+.gd-sub--first {
+  margin-top: clamp(32px, 5vh, 48px);
+}
+.gd-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  margin-top: 4px;
+}
+.gd-body .gd-jump a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 500;
+}
+/* Who does a step, and when. */
+.gd-meta,
+.gd-body .gd-meta {
+  margin-bottom: 8px;
+  font-size: 0.9375rem;
+  color: rgb(4 30 66 / 0.66);
+}
+.gd-who {
+  margin: 20px 0;
+  padding: 18px 22px;
+  border-radius: 16px;
+  background: rgb(4 30 66 / 0.04);
+}
+.gd-who__head {
+  margin-bottom: 8px;
+  font-family: var(--mono);
+  font-size: 0.8125rem !important;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgb(4 30 66 / 0.62) !important;
+}
+.gd-who ul {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 10px;
+  padding-left: 1.1em;
+}
+.gd-chain {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 8px;
+  padding-left: 1.15em;
+}
+.gd-fields {
+  margin-top: 12px;
+}
+
+@media (max-width: 640px) {
+  .gd-body [data-section] {
+    scroll-margin-top: 64px;
+  }
+  .gd-who {
+    padding: 16px 18px;
+  }
+}

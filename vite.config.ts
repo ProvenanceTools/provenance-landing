@@ -5,8 +5,12 @@ export default defineConfig({
     target: 'es2022',
     assetsInlineLimit: 0,
     rollupOptions: {
-      output: {
-        manualChunks: { three: ['three'] },
+      // One entry per page: the overview, then one page for each audience (paths from the project root).
+      input: {
+        main: 'index.html',
+        students: 'students.html',
+        instructors: 'instructors.html',
+        guide: 'guide.html',
       },
     },
   },

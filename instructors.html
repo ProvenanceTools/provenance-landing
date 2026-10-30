@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Provenance for instructors &amp; TAs</title>
+    <meta
+      name="description"
+      content="Review how student code was written, not just the final file: recorded history, safeguards, and the open-source review tools."
+    />
+    <meta name="theme-color" content="#f7f7f5" />
+    <link rel="icon" href="/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href="https://provtools.com/instructors.html" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://provtools.com/instructors.html" />
+    <meta property="og:title" content="Provenance for instructors &amp; TAs" />
+    <meta
+      property="og:description"
+      content="A tamper-evident record of how student code gets written. Process evidence, not AI detection. Open source, in use at UC Berkeley."
+    />
+    <meta property="og:image" content="https://provtools.com/img/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link
+      rel="preload"
+      href="/fonts/instrument-sans-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/ibm-plex-mono-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Paint the day ground before anything else loads: the page opens on paper. -->
+    <style>
+      html,
+      body {
+        background: #f7f7f5;
+        color: #041e42;
+      }
+    </style>
+    <link rel="stylesheet" href="/src/styles/index.css" />
+    <link rel="stylesheet" href="/src/styles/instructors.css" />
+
+    <script>
+      document.documentElement.classList.replace('no-js', 'js');
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('motion');
+      }
+      // Start the entrance once the display face is ready (never more than 1.2 s),
+      // so the headline never rises in a fallback font and swaps mid-flight.
+      (function () {
+        var root = document.documentElement;
+        var go = function () {
+          root.classList.add('ready');
+        };
+        if (!document.fonts || !document.fonts.load) return go();
+        Promise.race([
+          document.fonts.load('500 1em "Instrument Sans"'),
+          new Promise(function (r) {
+            setTimeout(r, 1200);
+          }),
+        ]).then(go, go);
+      })();
+    </script>
+  </head>
+
+  <body class="page-instructors">
+    <a class="skip" href="#main">Skip to content</a>
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="nav" data-theme="day">
+      <a class="nav__brand" href="./" aria-label="Provenance, overview">
+        <svg class="mark" viewBox="40 64 176 124" aria-hidden="true">
+          <defs>
+            <clipPath id="nav-cross"><rect x="96" y="50" width="64" height="78" /></clipPath>
+          </defs>
+          <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
+          <rect class="mark__accent" x="110" y="74" width="96" height="104" rx="34" />
+          <g clip-path="url(#nav-cross)">
+            <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
+          </g>
+        </svg>
+        <span class="wordmark">Provenance</span>
+      </a>
+      <nav class="nav__links" aria-label="Primary">
+        <a class="nav__link" href="./"
+          ><span class="nav__full">Overview</span><span class="nav__short">Overview</span></a
+        >
+        <a class="nav__link" href="students.html"
+          ><span class="nav__full">For students</span><span class="nav__short">Students</span></a
+        >
+        <a class="nav__link" href="instructors.html" aria-current="page"
+          ><span class="nav__full">For instructors &amp; TAs</span
+          ><span class="nav__short">Instructors</span></a
+        >
+      </nav>
+      <div class="nav__end">
+        <a class="nav__link nav__link--quiet" href="https://github.com/ProvenanceTools">GitHub</a>
+        <a
+          class="btn btn--primary btn--small"
+          href="mailto:aaryanm@berkeley.edu?subject=Provenance%20for%20my%20course"
+        >
+          <span>Talk to us</span>
+          <span class="btn__icon" aria-hidden="true">&#8599;</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main" class="inst">
+      <!-- Page sub-navigation: stays under the site bar while you scroll. -------- -->
+      <nav class="inst-sub" aria-label="On this page">
+        <div class="inst-sub__bar">
+          <a class="inst-sub__title" href="#instructors">For Instructors &amp; TAs</a>
+          <div class="inst-sub__end">
+            <ul class="inst-sub__links" role="list">
+              <li><a href="#instructors" data-spy="overview">Overview</a></li>
+              <li><a href="#review" data-spy="review">Review</a></li>
+              <li>
+                <a
+                  href="guide.html#instructors"
+                  aria-label="Guide (opens in a new tab)"
+                  target="_blank"
+                  rel="noopener"
+                  >Guide <span class="inst-sub__out" aria-hidden="true">&#8599;</span></a
+                >
+              </li>
+              <li><a href="https://github.com/ProvenanceTools">GitHub</a></li>
+            </ul>
+            <a
+              class="btn btn--primary btn--small"
+              href="mailto:aaryanm@berkeley.edu?subject=Provenance%20for%20my%20course"
+              >Talk to us</a
+            >
+          </div>
+        </div>
+      </nav>
+
+      <!-- Header: who this page is for, the promise, and where to go next. ------- -->
+      <section class="inst-head" id="instructors" data-theme="day" aria-labelledby="inst-title">
+        <div class="wrap pt-center">
+          <p class="pt-eyebrow" data-enter style="--d: 0">For instructors &amp; TAs</p>
+          <h1 class="pt-hero" id="inst-title" data-enter style="--d: 1">
+            Look beyond the&nbsp;submission.
+          </h1>
+          <p class="pt-sub" data-enter style="--d: 2">
+            A final file shows what was handed in, not how it came to be.
+          </p>
+          <div class="inst-actions" data-enter style="--d: 3">
+            <a
+              class="btn btn--primary"
+              href="mailto:aaryanm@berkeley.edu?subject=Provenance%20for%20my%20course"
+            >
+              <span>Talk to us</span>
+              <span class="btn__icon" aria-hidden="true">&#8599;</span>
+            </a>
+            <a class="pt-link" href="guide.html#instructors" target="_blank" rel="noopener"
+              >Instructor Guide<span class="visually-hidden"> (opens in a new tab)</span></a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- The live demonstration: two recordings of one file, on one clock. ------ -->
+      <section
+        class="histories inst-stage"
+        id="histories"
+        data-theme="night"
+        aria-labelledby="histories-title"
+      >
+        <h2 class="pt-h3" id="histories-title">Same file. Two histories.</h2>
+        <figure class="records" data-records aria-describedby="records-desc">
+          <div class="records__axis mono" aria-hidden="true">
+            <div class="records__ticks" data-axis></div>
+            <span class="records__clock" data-clock>20:55</span>
+          </div>
+          <div class="record" data-record="written">
+            <div class="record__head">
+              <h3 class="record__title">An evening of work</h3>
+              <p class="record__stats mono">
+                <span data-stat>633 edits</span><span data-stat>10 test runs</span
+                ><span data-stat>0 pastes</span>
+              </p>
+            </div>
+            <div class="record__track" data-track></div>
+            <ol class="record__notes mono" data-notes role="list" aria-hidden="true"></ol>
+          </div>
+          <div class="record" data-record="pasted">
+            <div class="record__head">
+              <h3 class="record__title">Away, then one paste</h3>
+              <p class="record__stats mono">
+                <span data-stat>1 edit</span><span data-stat>1 test run</span
+                ><span data-stat>1 paste</span>
+              </p>
+            </div>
+            <div class="record__track" data-track></div>
+            <ol class="record__notes mono" data-notes role="list" aria-hidden="true"></ol>
+          </div>
+          <figcaption class="records__foot">
+            <p class="records__digests mono" aria-hidden="true">
+              <span>trails.py</span>
+              <span class="records__digest" data-digest></span>
+              <span class="records__eq">=</span>
+              <span class="records__digest" data-digest></span>
+            </p>
+            <p class="records__verdict">The result is identical. The evidence is not.</p>
+            <button class="records__replay mono" type="button" data-replay>Replay</button>
+            <span class="visually-hidden" id="records-desc">
+              Two recordings of the same assignment on one clock, 20:55 to 23:41. In the first, a
+              student types the file over the evening: 633 edits and 10 test runs, stuck for a while
+              on longest_flat, which they delete and write again, and every test passes at 23:40. In
+              the second, the editor sits in the background for two and a half hours, then the whole
+              file arrives in a single 26-line paste. Both final files are identical.
+            </span>
+          </figcaption>
+        </figure>
+        <p class="inst-stage__more">
+          <a class="pt-link" href="#review">Explore the review experience</a>
+        </p>
+      </section>
+
+      <!-- The annotated evening. -------------------------------------------------- -->
+      <section class="inst-evening" data-theme="day" aria-labelledby="insight-title">
+        <div class="wrap">
+          <div class="pt-center">
+            <h2 class="pt-h3" id="insight-title" data-fade>The moments between the answers.</h2>
+            <p class="pt-body" data-fade>
+              A failed test. A discarded approach. A function written again.
+            </p>
+          </div>
+          <figure class="evening" data-evening>
+            <div class="evening__plot" data-evening-plot aria-hidden="true"></div>
+            <div class="evening__axis mono" data-evening-axis aria-hidden="true"></div>
+            <figcaption class="visually-hidden">
+              The first history, annotated: stuck on longest_flat for about forty minutes across six
+              failing test runs, away for nine minutes, the function deleted and rewritten, and
+              every test passing at 23:40.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- Evidence, not accusation: its own chapter, on white. ------------------- -->
+      <section class="inst-review" id="review" data-theme="day" aria-labelledby="fair-title">
+        <div class="wrap">
+          <div class="pt-center">
+            <h2 class="pt-h2" id="fair-title" data-split>
+              A flag is a question, not a&nbsp;verdict.
+            </h2>
+          </div>
+
+          <div class="inst-cards">
+            <div class="inst-card" data-fade>
+              <div class="flag" data-flag aria-hidden="true">
+                <span class="flag__level mono" data-flag-level>high</span>
+                <span class="flag__text" data-flag-text>Paste of 6 lines into trails.py</span>
+              </div>
+              <p class="pt-body">
+                <strong>Context matters.</strong> Moving code already written is recognized as a
+                move, not an unexplained paste.
+              </p>
+            </div>
+            <div class="inst-card" data-fade>
+              <div class="checks mono" aria-hidden="true">
+                <span><i class="is-ok"></i>chain intact</span>
+                <span><i class="is-ok"></i>seal valid</span>
+                <span><i class="is-skipped"></i>checkpoints: skipped</span>
+              </div>
+              <p class="pt-body">
+                <strong>Uncertainty stays visible.</strong> A check that cannot run is marked as
+                skipped, never as a failure.
+              </p>
+            </div>
+          </div>
+
+          <ul class="inst-pledges" role="list" data-fade>
+            <li>
+              <strong class="pt-h3">Courses set the rules.</strong>
+              <span class="pt-body">Staff configure supported recording and review signals.</span>
+            </li>
+            <li>
+              <strong class="pt-h3">People make decisions.</strong>
+              <span class="pt-body"
+                >Flags lead to moments in the replay, not automatic findings.</span
+              >
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- The tools. --------------------------------------------------------------- -->
+      <section class="suite inst-tools" id="suite" data-theme="day" aria-labelledby="suite-title">
+        <div class="wrap">
+          <div class="pt-center">
+            <h2 class="pt-h3" id="suite-title" data-fade>One record. Every tool.</h2>
+          </div>
+
+          <div class="suite__map" data-suite>
+            <svg class="suite__wires" data-wires aria-hidden="true"></svg>
+
+            <div class="suite__col">
+              <p class="suite__stage mono">Record</p>
+              <a
+                class="tool"
+                data-node="code"
+                href="https://marketplace.visualstudio.com/items?itemName=itsgeagle.provenance-recorder"
+              >
+                <span class="tool__code mono">provcode</span>
+                <span class="tool__name">Provenance for VS&nbsp;Code</span>
+                <span class="tool__line">Records supported development activity in VS Code.</span>
+              </a>
+              <a
+                class="tool"
+                data-node="jet"
+                href="https://plugins.jetbrains.com/plugin/32944-provenance-recorder/"
+              >
+                <span class="tool__code mono">provjet</span>
+                <span class="tool__name">Provenance for JetBrains</span>
+                <span class="tool__line">Records activity in compatible JetBrains IDEs.</span>
+              </a>
+              <a
+                class="tool"
+                data-node="nvim"
+                href="https://github.com/ProvenanceTools/provenance-neovim-recorder"
+              >
+                <span class="tool__code mono">provnvim</span>
+                <span class="tool__name">Provenance for Neovim</span>
+                <span class="tool__line">A lightweight recorder for Neovim.</span>
+              </a>
+            </div>
+
+            <div class="suite__col suite__col--mid">
+              <p class="suite__stage mono">Hand in</p>
+              <div class="tool tool--bundle" data-node="bundle">
+                <svg class="mark tool__mark" viewBox="40 64 176 124" aria-hidden="true">
+                  <defs>
+                    <clipPath id="suite-cross">
+                      <rect x="96" y="50" width="64" height="78" />
+                    </clipPath>
+                  </defs>
+                  <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
+                  <rect class="mark__accent" x="110" y="74" width="96" height="104" rx="34" />
+                  <g clip-path="url(#suite-cross)">
+                    <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
+                  </g>
+                </svg>
+                <span class="tool__name">Signed bundle</span>
+                <span class="tool__line"
+                  >The history and its signed evidence, packaged for submission.</span
+                >
+              </div>
+              <a
+                class="tool"
+                data-node="gate"
+                href="https://github.com/ProvenanceTools/provenance-gradescope-gateway"
+              >
+                <span class="tool__code mono">provgate</span>
+                <span class="tool__name">Gradescope gateway</span>
+                <span class="tool__line">Transfers new submissions to the Provenance server.</span>
+              </a>
+            </div>
+
+            <div class="suite__col">
+              <p class="suite__stage mono">Check</p>
+              <div class="tool" data-node="server">
+                <span class="tool__code mono">provd</span>
+                <span class="tool__name">Provenance server</span>
+                <span class="tool__line"
+                  >Receives submissions and verifies the available evidence.</span
+                >
+              </div>
+            </div>
+
+            <div class="suite__col">
+              <p class="suite__stage mono">Review</p>
+              <div class="tool" data-node="lens">
+                <span class="tool__code mono">provlens</span>
+                <span class="tool__name">Provenance analyzer</span>
+                <span class="tool__line"
+                  >Explore the events, signals, and recorded development history.</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Try it: the working editor is the explanation. ------------------------- -->
+      <section class="tryit inst-try" id="tryit" data-theme="day" aria-labelledby="tryit-title">
+        <div class="tryit__sticky">
+          <div class="wrap tryit__inner">
+            <div class="tryit__copy pt-center">
+              <h2 class="pt-h3" id="tryit-title" data-fade>See it for yourself.</h2>
+              <p class="pt-body" data-fade>Type, paste, click away and return.</p>
+            </div>
+            <div class="tryit__slot" data-slot aria-hidden="true"></div>
+            <div class="playground" data-playground>
+              <div class="playground__editor">
+                <div class="playground__bar mono">
+                  <span class="playground__file"
+                    >scratch.py
+                    <span class="playground__status" aria-hidden="true"
+                      ><span class="playground__hint">Start typing</span
+                      ><span class="playground__live">Recording</span></span
+                    ></span
+                  >
+                  <button class="playground__replay mono" type="button" data-replay>Replay</button>
+                </div>
+                <label class="visually-hidden" for="scratch"
+                  >A small code editor whose edits are recorded on this page. Tab indents; press
+                  Escape, then Tab, to leave it.</label
+                >
+                <textarea
+                  id="scratch"
+                  class="playground__input mono"
+                  spellcheck="false"
+                  autocapitalize="off"
+                  autocomplete="off"
+                  data-input
+                ></textarea>
+              </div>
+              <div class="playground__log">
+                <div class="playground__bar mono">
+                  <span>scratch.slog</span><span data-log-status>0 events</span>
+                </div>
+                <ol class="playground__rows mono" data-log aria-live="off"></ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Limits: kept in full, quietly. ------------------------------------------- -->
+      <section class="inst-limits" data-theme="day" aria-labelledby="limits-title">
+        <div class="wrap pt-center">
+          <h2 class="pt-h3" id="limits-title" data-fade>What a record cannot know.</h2>
+          <div class="inst-limits__text" data-fade>
+            <p class="pt-sub">
+              A log captures events, not intention. It cannot guarantee authorship or make forgery
+              impossible.
+            </p>
+            <p class="pt-sub">
+              Provenance makes certain changes detectable and the recorded process examinable. The
+              evidence still needs a human reader.
+            </p>
+          </div>
+          <blockquote class="quote inst-quote" data-fade>
+            <footer class="mono">From the Provenance design document</footer>
+            <p>
+              &ldquo;We will know if you do something obvious, and we will know enough to ask
+              questions if you do something subtle.&rdquo;
+            </p>
+          </blockquote>
+        </div>
+      </section>
+
+      <!-- The way in: California gold, one action. -------------------------------- -->
+      <section class="close" data-theme="signal" aria-labelledby="close-title">
+        <div class="close__pattern" data-pattern aria-hidden="true"></div>
+        <div class="close__anchor" data-anchor="close">
+          <picture class="still" style="--k: 333%">
+            <source
+              type="image/avif"
+              srcset="/img/still-close-520.avif 520w, /img/still-close-1040.avif 1040w"
+              sizes="(max-width: 900px) 50vw, 30vw"
+            />
+            <img
+              src="/img/still-close-1040.webp"
+              srcset="/img/still-close-520.webp 520w, /img/still-close-1040.webp 1040w"
+              sizes="(max-width: 900px) 50vw, 30vw"
+              alt=""
+              width="1040"
+              height="1040"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </div>
+        <div class="wrap close__inner">
+          <h2 class="close__title display" id="close-title" data-split>
+            Bring Provenance<br />
+            to your course.
+          </h2>
+          <div class="actions" data-fade>
+            <a
+              class="btn btn--ink"
+              href="mailto:aaryanm@berkeley.edu?subject=Provenance%20for%20my%20course"
+            >
+              <span>Talk to us</span>
+              <span class="btn__icon" aria-hidden="true">&#8599;</span>
+            </a>
+          </div>
+        </div>
+
+        <footer class="foot wrap">
+          <a class="foot__brand" href="./" aria-label="Provenance, overview">
+            <svg class="mark" viewBox="40 64 176 124" aria-hidden="true">
+              <defs>
+                <clipPath id="foot-cross"><rect x="96" y="50" width="64" height="78" /></clipPath>
+              </defs>
+              <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
+              <rect class="mark__accent" x="110" y="74" width="96" height="104" rx="34" />
+              <g clip-path="url(#foot-cross)">
+                <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
+              </g>
+            </svg>
+            <span class="wordmark">Provenance</span>
+          </a>
+
+          <p class="foot__made">Open source · Built at UC Berkeley.</p>
+        </footer>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+    <script>
+      // Marks which place in the sub-navigation you are in. Nothing depends on it.
+      (function () {
+        var sub = document.querySelector('.inst-sub');
+        var review = document.getElementById('review');
+        var links = document.querySelectorAll('.inst-sub [data-spy]');
+        if (!sub || !review || !links.length) return;
+        var queued = false;
+        function update() {
+          queued = false;
+          var line = sub.getBoundingClientRect().bottom + 24;
+          var r = review.getBoundingClientRect();
+          var here = r.top > line ? 'overview' : r.bottom > line ? 'review' : '';
+          links.forEach(function (a) {
+            if (a.getAttribute('data-spy') === here) a.setAttribute('aria-current', 'location');
+            else a.removeAttribute('aria-current');
+          });
+        }
+        function queue() {
+          if (!queued) {
+            queued = true;
+            requestAnimationFrame(update);
+          }
+        }
+        addEventListener('scroll', queue, { passive: true });
+        addEventListener('resize', queue);
+        update();
+      })();
+    </script>
+  </body>
+</html>

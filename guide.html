@@ -1,0 +1,1533 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Provenance guide</title>
+    <meta
+      name="description"
+      content="Install the Provenance recorder, fix problems, adopt it in a course, or run the server. One guide, four topics."
+    />
+    <meta name="theme-color" content="#f7f7f5" />
+    <link rel="icon" href="/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href="https://provtools.com/guide.html" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://provtools.com/guide.html" />
+    <meta property="og:title" content="Provenance guide" />
+    <meta
+      property="og:description"
+      content="Installation, troubleshooting, instructor and administration guides for Provenance. Open source, in use at UC Berkeley."
+    />
+    <meta property="og:image" content="https://provtools.com/img/og.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link
+      rel="preload"
+      href="/fonts/instrument-sans-var.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/ibm-plex-mono-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Paint the day ground before anything else loads: the page opens on paper. -->
+    <style>
+      html,
+      body {
+        background: #f7f7f5;
+        color: #041e42;
+      }
+    </style>
+    <link rel="stylesheet" href="/src/styles/index.css" />
+    <link rel="stylesheet" href="/src/styles/guide.css" />
+
+    <script>
+      document.documentElement.classList.replace('no-js', 'js');
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('motion');
+      }
+      // Which topic and editor to show, read from the address (#topic or #topic/editor) before
+      // anything paints, so the right text is there from the first frame.
+      (function () {
+        var topics = ['installation', 'troubleshooting', 'instructors', 'administration'];
+        var editors = ['vscode', 'jetbrains', 'neovim'];
+        var parts = location.hash.slice(1).split('/');
+        var root = document.documentElement;
+        root.setAttribute('data-topic', topics.indexOf(parts[0]) > -1 ? parts[0] : 'installation');
+        root.setAttribute('data-ide', editors.indexOf(parts[1]) > -1 ? parts[1] : 'vscode');
+      })();
+    </script>
+  </head>
+
+  <body class="page-guide">
+    <a class="skip" href="#main">Skip to content</a>
+
+    <header class="nav" data-theme="day">
+      <a class="nav__brand" href="./" aria-label="Provenance, overview">
+        <svg class="mark" viewBox="40 64 176 124" aria-hidden="true">
+          <defs>
+            <clipPath id="nav-cross"><rect x="96" y="50" width="64" height="78" /></clipPath>
+          </defs>
+          <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
+          <rect class="mark__accent" x="110" y="74" width="96" height="104" rx="34" />
+          <g clip-path="url(#nav-cross)">
+            <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
+          </g>
+        </svg>
+        <span class="wordmark">Provenance</span>
+      </a>
+    </header>
+
+    <main id="main" class="gd">
+      <!-- The four topics. The address says which one is open. ----------------- -->
+      <nav class="gd-topics" aria-label="Guide topics">
+        <div class="gd-topics__bar">
+          <a class="gd-topics__title" href="#installation">Guide</a>
+          <ul class="gd-topics__links" role="list">
+            <li>
+              <a href="#installation" data-topic-link="installation"
+                ><span class="gd-full">Installation</span><span class="gd-short">Install</span></a
+              >
+            </li>
+            <li>
+              <a href="#troubleshooting" data-topic-link="troubleshooting"
+                ><span class="gd-full">Troubleshooting</span><span class="gd-short">Fix it</span></a
+              >
+            </li>
+            <li class="gd-group-start">
+              <a href="#instructors" data-topic-link="instructors"
+                ><span class="gd-full">For Instructors</span
+                ><span class="gd-short">Instructors</span></a
+              >
+            </li>
+            <li>
+              <a href="#administration" data-topic-link="administration"
+                ><span class="gd-full">Administration</span><span class="gd-short">Admin</span></a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <!-- ===================================================================== -->
+      <!-- Installation                                                          -->
+      <!-- ===================================================================== -->
+      <article class="gd-panel" data-topic="installation" data-title="Installation">
+        <header class="gd-head">
+          <p class="pt-eyebrow">Installation</p>
+          <h1 class="pt-h2">
+            Install the recorder<span data-for="vscode"> for VS&nbsp;Code</span
+            ><span data-for="jetbrains"> for JetBrains</span
+            ><span data-for="neovim"> for Neovim</span>.
+          </h1>
+          <p class="pt-sub">Setup takes a few minutes. You only do it once per computer.</p>
+        </header>
+
+        <div class="gd-body">
+          <!-- What you need, for the editor you picked -->
+          <div class="gd-need" data-for="vscode">
+            <p class="gd-need__head">You will need</p>
+            <ul>
+              <li>
+                <strong>Visual Studio Code 1.100 or newer.</strong> Check under
+                <em>Code → About Visual Studio Code</em> (macOS) or <em>Help → About</em>
+                (Windows, Linux). Update from
+                <a href="https://code.visualstudio.com">code.visualstudio.com</a>. On macOS, run VS
+                Code from your Applications folder; a copy launched from Downloads or a disk image
+                can be read-only.
+              </li>
+              <li>
+                <strong>The assignment folder.</strong> It contains a hidden
+                <code>.provenance-manifest</code> file, which is what authorizes recording. If it is
+                missing, recording cannot start: download or clone the starter files again.
+              </li>
+            </ul>
+          </div>
+          <div class="gd-need" data-for="jetbrains">
+            <p class="gd-need__head">You will need</p>
+            <ul>
+              <li>
+                <strong>A JetBrains IDE on build 261 or newer (2026.1+)</strong>, such as IntelliJ,
+                PyCharm or CLion.
+              </li>
+              <li>
+                <strong>The assignment folder</strong>, with its course-signed
+                <code>.provenance-manifest</code> at the project root. Without one, the plugin stays
+                inactive by design.
+              </li>
+            </ul>
+          </div>
+          <div class="gd-need" data-for="neovim">
+            <p class="gd-need__head">You will need</p>
+            <ul>
+              <li>
+                <strong>Neovim 0.10 or newer.</strong> Check with <code>nvim --version</code> (or
+                <code>:version</code> inside Neovim). Update from
+                <a href="https://neovim.io">neovim.io</a>.
+              </li>
+              <li>
+                <strong>A Neovim plugin manager</strong>: lazy.nvim, packer.nvim, vim-plug or
+                mini.deps.
+              </li>
+              <li>
+                <strong>The assignment folder</strong>, with its hidden
+                <code>.provenance-manifest</code> file. If it is missing, recording cannot start:
+                download the starter files again.
+              </li>
+            </ul>
+          </div>
+
+          <ol class="gd-steps">
+            <!-- ============ VS Code ============ -->
+            <li class="gd-step" data-for="vscode">
+              <h2 class="gd-step__title">Open the Extensions panel</h2>
+              <p>
+                Click the Extensions icon in the sidebar (four squares), or press
+                <kbd>⇧⌘X</kbd> on macOS or <kbd>Ctrl+Shift+X</kbd> on Windows and Linux.
+              </p>
+            </li>
+            <li class="gd-step" data-for="vscode">
+              <h2 class="gd-step__title">Install Provenance Recorder</h2>
+              <p>
+                Search for <strong>Provenance Recorder</strong>. On the result published by
+                <strong>Aaryan Mehta (itsgeagle)</strong>, click Install. It is free and makes no
+                network requests while recording.
+              </p>
+              <figure class="gd-shot">
+                <img
+                  src="/guide/vscode-install-search.png"
+                  alt="The VS Code Extensions panel with “Provenance Recorder” typed in the search box and the extension by Aaryan Mehta listed below"
+                  width="596"
+                  height="149"
+                  loading="lazy"
+                />
+                <figcaption>
+                  Searching for “Provenance Recorder” in the Extensions panel.
+                </figcaption>
+              </figure>
+              <p class="gd-aside-text">
+                Prefer one line? Press <kbd>⌘P</kbd> or <kbd>Ctrl+P</kbd>, paste this, and press
+                Enter:
+              </p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>ext install itsgeagle.provenance-recorder</code></pre>
+              <p class="gd-links">
+                <a
+                  class="pt-link"
+                  href="https://marketplace.visualstudio.com/items?itemName=itsgeagle.provenance-recorder"
+                  >Open the Marketplace page</a
+                >
+              </p>
+            </li>
+            <li class="gd-step" data-for="vscode">
+              <h2 class="gd-step__title">Copy your enrollment key</h2>
+              <p>
+                Open the command palette (<kbd>⇧⌘P</kbd> or <kbd>Ctrl+Shift+P</kbd>) and run
+                <strong>Provenance: Show My Enrollment Key</strong>. It copies your
+                <em>public</em> key. The private half is created on this computer and never leaves
+                it.
+              </p>
+              <p class="gd-aside-text">
+                Enrolling lets your courses tell that the work in your recordings is yours. Do it
+                once per computer; the credential is not tied to a course or a semester.
+              </p>
+            </li>
+            <li class="gd-step" data-for="vscode">
+              <h2 class="gd-step__title">Get your credential</h2>
+              <p>
+                In a browser, open the <code>/enroll</code> page of your institution's Provenance
+                site, for example <code>https://provenance.your-school.edu/enroll</code>. Sign in
+                with your university account, paste your key, and copy the credential the page gives
+                back.
+              </p>
+              <p class="gd-aside-text">
+                You do not need to be on a course roster yet; rosters usually arrive after the first
+                submission.
+              </p>
+            </li>
+            <li class="gd-step" data-for="vscode">
+              <h2 class="gd-step__title">Import the credential</h2>
+              <p>
+                Back in VS Code, run <strong>Provenance: Import Enrollment Token</strong> and paste
+                it.
+              </p>
+              <p class="gd-aside-text">
+                If you skip enrolling, recording still works, but the log will not carry your
+                identity and your course may not be able to attribute it to you. Do it before your
+                first assignment.
+              </p>
+            </li>
+            <li class="gd-step" data-for="vscode">
+              <h2 class="gd-step__title">Open your assignment folder</h2>
+              <p>
+                Choose <em>File → Open Folder…</em> and select the assignment folder, or any folder
+                <em>above</em> it.
+              </p>
+              <p class="gd-warn">
+                Do not open a folder <em>inside</em> the assignment. The manifest is then outside
+                the search and nothing starts.
+              </p>
+            </li>
+            <li class="gd-step" data-for="vscode">
+              <h2 class="gd-step__title">Check that it is recording</h2>
+              <p>
+                Look at the status bar along the bottom of the window. If it says
+                <strong>Provenance: recording</strong>, you are set.
+              </p>
+              <figure class="gd-shot">
+                <img
+                  src="/guide/vscode-status-bar.png"
+                  alt="The VS Code status bar showing “Provenance: recording” while hw.py is open"
+                  width="281"
+                  height="238"
+                  loading="lazy"
+                />
+                <figcaption>The status bar shows “Provenance: recording”.</figcaption>
+              </figure>
+              <p class="gd-aside-text">
+                That indicator is the only visible change. A hidden <code>.provenance/</code>
+                folder appears in the assignment folder: that is the log. Do not delete or edit it.
+                Not seeing the indicator means your work is not being logged yet.
+                <a href="#troubleshooting/vscode">Go to troubleshooting.</a>
+              </p>
+            </li>
+            <li class="gd-step" data-for="vscode">
+              <h2 class="gd-step__title">Submit the way your course asks</h2>
+              <p>Your course tells you which one an assignment uses.</p>
+              <div class="gd-fork">
+                <div>
+                  <h3>ZIP submission</h3>
+                  <p>
+                    Open the command palette and run
+                    <strong>Provenance: Prepare Submission Bundle</strong>. A sealed
+                    <code>.zip</code> is saved next to your assignment folder. Upload
+                    <strong>only that .zip</strong>; it already contains your files and the log.
+                  </p>
+                  <figure class="gd-shot">
+                    <img
+                      src="/guide/vscode-command-palette.png"
+                      alt="The VS Code command palette showing “Provenance: Prepare Submission Bundle”"
+                      width="627"
+                      height="84"
+                      loading="lazy"
+                    />
+                    <figcaption>Running “Provenance: Prepare Submission Bundle”.</figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <h3>Git submission</h3>
+                  <p>
+                    There is no seal step. <code>.provenance/</code> is part of your repository, so
+                    commit and push it with your code:
+                  </p>
+                  <pre class="gd-code" data-copy><code>git add -A
+git commit -m "..."
+git push</code></pre>
+                  <p>
+                    Make sure no <code>.gitignore</code> covers <code>.provenance/</code>; a missing
+                    piece shows up as a gap in your record. Push regularly: only work you have
+                    pushed is in the record.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <!-- ============ JetBrains ============ -->
+            <li class="gd-step" data-for="jetbrains">
+              <h2 class="gd-step__title">Open the plugin settings</h2>
+              <p>In your IDE, go to <em>Settings → Plugins → Marketplace</em>.</p>
+            </li>
+            <li class="gd-step" data-for="jetbrains">
+              <h2 class="gd-step__title">Install Provenance Recorder</h2>
+              <p>
+                Search for <strong>Provenance Recorder</strong> and install it. This is the signed
+                release, which trusts only manifests signed by the real course key.
+              </p>
+              <p class="gd-links">
+                <a
+                  class="pt-link"
+                  href="https://plugins.jetbrains.com/plugin/32944-provenance-recorder"
+                  >Open the JetBrains Marketplace page</a
+                >
+              </p>
+            </li>
+            <li class="gd-aside" data-for="jetbrains">
+              <p>
+                <strong>Enrollment.</strong> The official JetBrains instructions do not include an
+                enrollment step. The student guide describes enrolling for VS Code.
+              </p>
+            </li>
+            <li class="gd-step" data-for="jetbrains">
+              <h2 class="gd-step__title">Open your assignment as the project</h2>
+              <p>
+                Open the assignment folder as your project, so that
+                <code>.provenance-manifest</code> sits at the project root.
+              </p>
+            </li>
+            <li class="gd-step" data-for="jetbrains">
+              <h2 class="gd-step__title">Check that it is recording</h2>
+              <p>
+                Look for <strong>Provenance: recording</strong> in the IDE's status bar. If it is
+                there, you are set.
+              </p>
+              <p class="gd-aside-text">
+                Nothing appears? The plugin only activates for a valid, course-signed manifest at
+                the project root.
+                <a href="#troubleshooting/jetbrains">Go to troubleshooting.</a>
+              </p>
+            </li>
+            <li class="gd-step" data-for="jetbrains">
+              <h2 class="gd-step__title">Prepare your submission</h2>
+              <p>
+                When you are done, choose <em>Tools → Provenance: Prepare Submission Bundle</em>. A
+                <code>*-bundle-*.zip</code> appears: that sealed bundle is your submission. Your
+                course tells you how to hand it in.
+              </p>
+            </li>
+
+            <!-- ============ Neovim ============ -->
+            <li class="gd-step" data-for="neovim">
+              <h2 class="gd-step__title">Add the plugin, pinned to your course's tag</h2>
+              <p>
+                Add it to your plugin manager at the
+                <strong>release tag your course specifies</strong>. The examples use
+                <code>v0.3.0</code>. Pinning the tag is required: it ships the course's public key,
+                and its source hash is what the analyzer recognizes as an approved build.
+              </p>
+              <p class="gd-code-label">lazy.nvim</p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>{ "ProvenanceTools/provenance-neovim-recorder", version = "v0.3.0", lazy = false }</code></pre>
+              <p class="gd-code-label">packer.nvim</p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>use({ "ProvenanceTools/provenance-neovim-recorder", tag = "v0.3.0" })</code></pre>
+              <p class="gd-code-label">vim-plug (in init.vim)</p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>Plug 'ProvenanceTools/provenance-neovim-recorder', { 'tag': 'v0.3.0' }</code></pre>
+              <p class="gd-warn">
+                Do not lazy-load it. The recorder has to load every time Neovim starts so it can
+                notice when you open an assignment folder. For packer and vim-plug, do not add
+                <code>opt</code>, <code>cmd</code>, <code>ft</code>, <code>event</code>,
+                <code>{ 'on': … }</code> or <code>{ 'for': … }</code>. If it only loads on demand,
+                your work is not recorded even though it looks installed.
+              </p>
+              <p class="gd-links">
+                <a
+                  class="pt-link"
+                  href="https://github.com/ProvenanceTools/provenance-neovim-recorder#install"
+                  >Other plugin managers (mini.deps, built-in packages)</a
+                >
+              </p>
+            </li>
+            <li class="gd-step" data-for="neovim">
+              <h2 class="gd-step__title">Install, then restart Neovim</h2>
+              <p>
+                Run <code>:Lazy sync</code>, <code>:PackerSync</code> or <code>:PlugInstall</code>,
+                depending on your manager, then restart Neovim.
+              </p>
+            </li>
+            <li class="gd-aside" data-for="neovim">
+              <p>
+                <strong>Enrollment.</strong> The official Neovim instructions have no enrollment
+                step, and the plugin needs no account to install.
+              </p>
+            </li>
+            <li class="gd-step" data-for="neovim">
+              <h2 class="gd-step__title">Start Neovim inside the assignment folder</h2>
+              <p>
+                The recorder activates from Neovim's working directory, so start it
+                <em>inside</em> the assignment folder: not a parent, not a subfolder.
+              </p>
+              <pre class="gd-code" data-copy><code>cd path/to/the-assignment-folder
+nvim .</code></pre>
+              <p class="gd-aside-text">
+                Already in Neovim? <code>:cd path/to/the-assignment-folder</code> works too.
+              </p>
+            </li>
+            <li class="gd-step" data-for="neovim">
+              <h2 class="gd-step__title">Check that it is recording</h2>
+              <p>Run this in Neovim:</p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>:lua =require('provenance.recorder.status').segment()</code></pre>
+              <p>
+                If it prints <strong>● Provenance: recording</strong>, you are set. An empty string
+                (<code>""</code>) means recording is not active yet.
+              </p>
+              <p class="gd-aside-text">
+                A hidden <code>.provenance/</code> folder also appears in the assignment folder. Do
+                not delete, edit or commit it; the submission step bundles it for you. Not active?
+                <a href="#troubleshooting/neovim">Go to troubleshooting.</a>
+              </p>
+              <p class="gd-links">
+                <a
+                  class="pt-link"
+                  href="https://github.com/ProvenanceTools/provenance-neovim-recorder#status-indicator"
+                  >Add a permanent indicator to your statusline (optional)</a
+                >
+              </p>
+            </li>
+            <li class="gd-step" data-for="neovim">
+              <h2 class="gd-step__title">Prepare your submission</h2>
+              <p>When you have finished the assignment, run:</p>
+              <pre class="gd-code" data-copy><code>:ProvenanceSeal</code></pre>
+              <p>
+                A sealed <code>.zip</code> is written and Neovim prints its path. Upload
+                <strong>only that .zip</strong> to Gradescope; it already includes your assignment
+                files.
+              </p>
+            </li>
+          </ol>
+
+          <div class="gd-more">
+            <p class="gd-more__head">Official instructions</p>
+            <ul>
+              <li data-for="vscode">
+                <a
+                  href="https://github.com/ProvenanceTools/provenance/blob/main/docs/student-guide.md"
+                  >Student guide (VS Code) on GitHub</a
+                >
+              </li>
+              <li data-for="jetbrains">
+                <a href="https://github.com/ProvenanceTools/provenance-jetbrains-recorder"
+                  >JetBrains recorder README on GitHub</a
+                >
+              </li>
+              <li data-for="neovim">
+                <a
+                  href="https://github.com/ProvenanceTools/provenance-neovim-recorder/blob/main/docs/student-guide.md"
+                  >Neovim student guide on GitHub</a
+                >
+              </li>
+              <li>
+                <a href="https://provenance.eecs.berkeley.edu/faq">Student FAQ</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===================================================================== -->
+      <!-- Troubleshooting                                                       -->
+      <!-- ===================================================================== -->
+      <article class="gd-panel" data-topic="troubleshooting" data-title="Troubleshooting">
+        <header class="gd-head">
+          <p class="pt-eyebrow">Troubleshooting</p>
+          <h1 class="pt-h2">Something not working?</h1>
+          <p class="pt-sub">
+            First the questions that apply to every editor, then the ones for yours.
+          </p>
+        </header>
+
+        <div class="gd-body">
+          <h2 class="gd-sub gd-sub--first">Any editor</h2>
+          <p class="gd-lede">
+            Say so early. A gap you mention is administrative; a gap found later is a conversation.
+          </p>
+          <div class="gd-qas">
+            <details class="gd-qa">
+              <summary>I worked for an hour and it never said it was recording.</summary>
+              <div>
+                <p>
+                  That hour isn't in the log. Usually the cause is opening a folder inside the
+                  assignment rather than the assignment folder itself or one above it. If it was a
+                  lot of work, tell your course.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>I forgot, or my laptop died, or I was offline.</summary>
+              <div>
+                <p>
+                  Forgot entirely: mention it to your course. Laptop died or editor force-quit:
+                  nothing is lost, reopen the folder and keep going. Offline: fine, the recorder
+                  needs no network.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>I deleted or edited something in <code>.provenance/</code>.</summary>
+              <div>
+                <p>
+                  Tell your course and do not try to rebuild or repair it. Deleted work is gone from
+                  the record. The log is sealed, so an edit shows up as an edit however carefully it
+                  is made; reporting it makes it a non-event.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>Can I see exactly what was recorded?</summary>
+              <div>
+                <p>
+                  Yes. The <code>session-*.slog</code> files in <code>.provenance/</code> are plain
+                  newline-delimited JSON. Open one in any text editor and read every event as it was
+                  written.
+                </p>
+              </div>
+            </details>
+          </div>
+
+          <h2 class="gd-sub">Your editor</h2>
+          <div class="gd-seg" role="tablist" aria-label="Editor" data-ide-tabs>
+            <button type="button" role="tab" data-ide-tab="vscode">VS Code</button>
+            <button type="button" role="tab" data-ide-tab="jetbrains">JetBrains</button>
+            <button type="button" role="tab" data-ide-tab="neovim">Neovim</button>
+          </div>
+
+          <!-- VS Code -->
+          <div class="gd-qas" data-for="vscode">
+            <details class="gd-qa" open>
+              <summary>The status bar doesn't say “Provenance: recording”.</summary>
+              <div>
+                <p>The recorder only activates for an authorized assignment folder. Check that:</p>
+                <ul>
+                  <li>
+                    You opened the assignment folder itself, or a folder above it, not a folder
+                    inside it.
+                  </li>
+                  <li>
+                    The <code>.provenance-manifest</code> file is still in the assignment folder.
+                  </li>
+                  <li>
+                    You installed the build your course expects. If the manifest's signature doesn't
+                    verify against your installed build, recording won't start: reinstall the
+                    version posted for this assignment.
+                  </li>
+                </ul>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>“Prepare Submission Bundle” isn't in the command palette.</summary>
+              <div>
+                <p>
+                  The command only appears while the extension is active. Confirm the
+                  <strong>Provenance: recording</strong> indicator first. If your assignment uses
+                  Git submission, there is nothing to run: commit and push instead.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>Sealing the submission bundle failed.</summary>
+              <div>
+                <p>
+                  You will see an error message. The usual cause is a partially written log file,
+                  which the recorder repairs automatically on the next launch. Reopen the folder and
+                  run <strong>Prepare Submission Bundle</strong> again.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>I closed my editor in the middle of the assignment.</summary>
+              <div>
+                <p>
+                  Nothing is lost. The log is written continuously, not held until submission.
+                  Reopen the folder and keep working; the new session links to the previous one.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>I lost the computer my credential was on.</summary>
+              <div>
+                <p>
+                  If you took a backup with <strong>Back Up Student Identity Secret</strong>,
+                  restore it with <strong>Restore Student Identity Secret</strong>. If not, enroll
+                  the new machine at <code>/enroll</code> as in the installation steps: you get a
+                  fresh credential under the same identity. Tell your course either way, so any
+                  recording made in between can be accounted for.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>I work on two computers.</summary>
+              <div>
+                <p>
+                  That is supported. Install the recorder on the second computer, run
+                  <strong>Provenance: Show My Enrollment Key</strong> there (it makes its own key),
+                  then go to <code>/enroll</code> with the same university account and import the
+                  credential. Each machine gets its own credential under the same identity.
+                </p>
+                <p class="gd-warn">
+                  Do not copy your identity secret from one machine to the other. The backup
+                  commands exist only so you can recover a machine you lost. There is no copy on any
+                  server.
+                </p>
+              </div>
+            </details>
+          </div>
+
+          <!-- JetBrains -->
+          <div class="gd-qas" data-for="jetbrains">
+            <details class="gd-qa" open>
+              <summary>I don't see “Provenance: recording” in the status bar.</summary>
+              <div>
+                <p>
+                  The plugin activates only on a workspace that contains a valid, course-signed
+                  <code>.provenance-manifest</code> at the workspace root. Without one it stays
+                  inactive by design. Check that:
+                </p>
+                <ul>
+                  <li>
+                    You opened the assignment folder as the project, so the manifest is at its root.
+                  </li>
+                  <li>The <code>.provenance-manifest</code> file is still there.</li>
+                  <li>Your IDE is build 261 or newer (2026.1+).</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <!-- Neovim -->
+          <div class="gd-qas" data-for="neovim">
+            <details class="gd-qa" open>
+              <summary>The check prints <code>""</code>: recording is not active.</summary>
+              <div>
+                <p>The recorder only activates for an authorized assignment folder. Check that:</p>
+                <ul>
+                  <li>
+                    You started Neovim with the assignment folder as the working directory, not a
+                    parent or subfolder. Confirm with <code>:pwd</code>.
+                  </li>
+                  <li>
+                    The <code>.provenance-manifest</code> file is still present in that folder.
+                  </li>
+                  <li>
+                    You installed the tag your course expects. If the manifest's signature doesn't
+                    match your installed build, recording won't start: reinstall the version posted
+                    for this assignment and restart Neovim.
+                  </li>
+                </ul>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>
+                <code>:ProvenanceSeal</code> says “not an activated assignment workspace”.
+              </summary>
+              <div>
+                <p>
+                  The seal command only works while recording is active. Run the check from the
+                  installation steps first; if it prints <code>""</code>, fix activation before
+                  sealing.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>Sealing failed.</summary>
+              <div>
+                <p>
+                  You will see an error message. The usual cause is a partially written log file,
+                  which the plugin repairs automatically on the next launch. Reopen the folder and
+                  run <code>:ProvenanceSeal</code> again.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>I quit Neovim in the middle of the assignment.</summary>
+              <div>
+                <p>
+                  Nothing is lost. The log is written continuously, not held until submission.
+                  Reopen the folder and keep working; the new session links to the previous one.
+                </p>
+              </div>
+            </details>
+          </div>
+
+          <div class="gd-more">
+            <p class="gd-more__head">More</p>
+            <ul>
+              <li><a href="#installation">Back to installation</a></li>
+              <li><a href="https://provenance.eecs.berkeley.edu/faq">Student FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===================================================================== -->
+      <!-- For instructors                                                       -->
+      <!-- ===================================================================== -->
+      <article class="gd-panel" data-topic="instructors" data-title="For Instructors">
+        <header class="gd-head">
+          <p class="pt-eyebrow">For instructors &amp; TAs</p>
+          <h1 class="pt-h2">Use Provenance in your course.</h1>
+          <p class="pt-sub">From choosing editors to reviewing a record.</p>
+        </header>
+
+        <div class="gd-body">
+          <ol class="gd-steps">
+            <li class="gd-step">
+              <h2 class="gd-step__title">Choose the editors you accept</h2>
+              <p>
+                There are recorders for VS Code, JetBrains and Neovim. Your course decides which of
+                them it accepts, so tell students before they start: work written in an editor
+                without a recorder is not recorded.
+              </p>
+            </li>
+            <li class="gd-step">
+              <h2 class="gd-step__title">Hand out the assignment folder with a signed manifest</h2>
+              <p>
+                Recording only starts in a folder that contains a valid
+                <code>.provenance-manifest</code>, signed with your course's offline key. Staff
+                write the manifest, then sign it. In any other folder the recorder does nothing.
+              </p>
+              <p class="gd-links">
+                <a class="pt-link" href="#administration/manifest"
+                  >How staff write and sign a manifest</a
+                >
+              </p>
+            </li>
+            <li class="gd-step">
+              <h2 class="gd-step__title">Decide whether enrollment is required</h2>
+              <p>
+                Enrollment is required by default. A course can switch the prompt off in the signed
+                manifest (<code>policy.enrollment.required</code>). Recording is unaffected either
+                way, but without enrollment nothing in a submission says who produced it, so group
+                work cannot be split between partners. That suits solo assignments and is wrong for
+                group projects.
+              </p>
+            </li>
+            <li class="gd-step">
+              <h2 class="gd-step__title">Name the build students install</h2>
+              <p>
+                Each released build needs its own entry on the analyzer's allowlist, or its
+                submissions are flagged by the extension-hash check. For Neovim, give students the
+                release tag whose hash you added.
+              </p>
+            </li>
+            <li class="gd-step">
+              <h2 class="gd-step__title">Say how work is submitted</h2>
+              <p>
+                <strong>ZIP:</strong> students seal a <code>.zip</code> and upload only that.
+                <strong>Git (VS Code):</strong> students commit and push the
+                <code>.provenance/</code> folder with their code, so make sure no
+                <code>.gitignore</code> excludes it.
+              </p>
+            </li>
+            <li class="gd-step">
+              <h2 class="gd-step__title">Bring submissions into the Analyzer</h2>
+              <p>
+                Staff ingest a Gradescope “Download Submissions” export. The roster is read from the
+                export's <code>submission_metadata.yml</code>, and submissions that cannot be
+                matched wait in the unmatched tray for you to resolve. An administrator sets up the
+                course and semester first.
+              </p>
+              <p class="gd-links">
+                <a class="pt-link" href="#administration">Setting up the server (Administration)</a>
+              </p>
+            </li>
+            <li class="gd-step">
+              <h2 class="gd-step__title">Review with a person in the loop</h2>
+              <ul class="gd-list">
+                <li>
+                  Nothing is automatic. Provenance does not email you, mark a submission or file a
+                  report; it sorts submissions for staff to look at.
+                </li>
+                <li>
+                  A person reads the record, steps through what happened in order, and starts any
+                  conversation through your normal academic-integrity process.
+                </li>
+                <li>
+                  Context is usually the explanation: refactors, formatters, <code>git pull</code>
+                  and a student pasting their own code all show up as exactly that.
+                </li>
+                <li>
+                  The record cannot see thinking done away from the computer. It is a deterrent, not
+                  a cryptographic guarantee.
+                </li>
+              </ul>
+            </li>
+          </ol>
+
+          <div class="gd-cta">
+            <a
+              class="btn btn--primary"
+              href="mailto:aaryanm@berkeley.edu?subject=Provenance%20for%20my%20course"
+            >
+              <span>Talk to us</span>
+              <span class="btn__icon" aria-hidden="true">&#8599;</span>
+            </a>
+          </div>
+
+          <div class="gd-more">
+            <p class="gd-more__head">Official documentation</p>
+            <ul>
+              <li>
+                <a href="https://provenance.eecs.berkeley.edu/faq"
+                  >Student FAQ, to share with students</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/ProvenanceTools/provenance/blob/main/docs/student-faq-short.html"
+                  >Short FAQ for your course website</a
+                >
+              </li>
+              <li>
+                <a href="https://github.com/ProvenanceTools/provenance/blob/main/docs/heuristics.md"
+                  >Analyzer heuristics</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <!-- ===================================================================== -->
+      <!-- Administration                                                        -->
+      <!-- ===================================================================== -->
+      <article class="gd-panel" data-topic="administration" data-title="Administration">
+        <header class="gd-head">
+          <p class="pt-eyebrow">Administration</p>
+          <h1 class="pt-h2">Run the Provenance server.</h1>
+          <p class="pt-sub">For the staff who deploy and maintain the Analyzer.</p>
+        </header>
+
+        <div class="gd-body">
+          <p class="gd-warn">
+            This is for course infrastructure admins, not for students or instructors. It is a
+            summary: follow the full Admin Guide when you deploy.
+          </p>
+          <p class="gd-jump">
+            <a href="#administration/server">Run the server</a>
+            <a href="#administration/keys">Keys and manifests</a>
+          </p>
+
+          <h2 class="gd-sub gd-sub--first" data-section="server">Run the server</h2>
+
+          <ol class="gd-steps">
+            <li class="gd-step">
+              <h2 class="gd-step__title">Check the hosting requirements</h2>
+              <ul class="gd-list">
+                <li><strong>Node.js:</strong> 22 LTS.</li>
+                <li><strong>Postgres:</strong> 16 (10 GB disk minimum, 50 GB recommended).</li>
+                <li>
+                  <strong>Object storage:</strong> MinIO, AWS S3 or Cloudflare R2 (100 GB minimum, 1
+                  TB recommended).
+                </li>
+                <li><strong>Server RAM:</strong> 512 MB minimum, 2 GB recommended.</li>
+              </ul>
+              <p class="gd-aside-text">
+                The server is a single Node.js process that serves both the API and the built
+                frontend.
+              </p>
+            </li>
+            <li class="gd-step">
+              <h2 class="gd-step__title">Build it</h2>
+              <pre class="gd-code" data-copy><code>git clone &lt;repo&gt; provenance
+cd provenance
+npm install
+npm run build</code></pre>
+            </li>
+            <li class="gd-step">
+              <h2 class="gd-step__title">Configure the environment</h2>
+              <p>Copy the example file, then fill it in:</p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>cp packages/server/.env.example packages/server/.env</code></pre>
+              <p>
+                At minimum set <code>PUBLIC_BASE_URL</code>, <code>DATABASE_URL</code>,
+                <code>GOOGLE_OAUTH_CLIENT_ID</code>, <code>GOOGLE_OAUTH_CLIENT_SECRET</code>,
+                <code>AUTH_COOKIE_SIGNING_SECRET</code>, the <code>OBJECT_STORAGE_*</code> values
+                (or <code>BLOB_STORAGE_BACKEND=fs</code> with its directory and signing secret) and
+                <code>AUTH_SUPERADMIN_EMAILS</code>. Generate the cookie secret with:
+              </p>
+              <pre class="gd-code" data-copy><code>openssl rand -base64 32</code></pre>
+              <p class="gd-warn">
+                <code>AUTH_SUPERADMIN_EMAILS</code> and <code>AUTH_ALLOWED_HOSTED_DOMAINS</code> are
+                JSON arrays, not comma-separated lists. In production the server refuses to start if
+                <code>AUTH_SUPERADMIN_EMAILS</code> is empty, or if the cookie secret is still the
+                development value.
+              </p>
+            </li>
+            <li class="gd-step">
+              <h2 class="gd-step__title">Set up Google sign-in</h2>
+              <p>
+                In Google Cloud Console, create a project and an OAuth client of type Web
+                application. Add your site as an authorized JavaScript origin, and this as the
+                authorized redirect URI:
+              </p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>https://provenance.example.edu/api/v1/auth/google/callback</code></pre>
+              <p>
+                Use the <strong>Internal</strong> consent screen and no scopes beyond
+                <code>openid email profile</code>. Set <code>AUTH_ALLOWED_HOSTED_DOMAINS</code> to
+                your institution's Workspace domain.
+              </p>
+              <p class="gd-warn">
+                The hosted-domain check is the only thing keeping outsiders out. Do not loosen it.
+              </p>
+            </li>
+            <li class="gd-step">
+              <h2 class="gd-step__title">Run the database migrations</h2>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>npm run db:migrate --workspace=packages/server</code></pre>
+              <p class="gd-aside-text">
+                There is no <code>--mode=migrate</code>. This step needs the workspace's dev
+                dependencies installed.
+              </p>
+            </li>
+            <li class="gd-step">
+              <h2 class="gd-step__title">Start the server</h2>
+              <pre class="gd-code" data-copy><code>node packages/server/dist/index.js --mode=api
+node packages/server/dist/index.js --mode=worker</code></pre>
+              <p>
+                Run the API and a worker; the worker runs the cron jobs and processes ingest. For
+                development or a single machine, <code>--mode=all</code> does both. The default port
+                is 3000 (<code>PORT</code>). To serve the frontend from the same server, point
+                <code>PUBLIC_DIR</code> at the built <code>packages/analyzer/dist/</code>.
+              </p>
+            </li>
+            <li class="gd-step">
+              <h2 class="gd-step__title">Sign in and create a course</h2>
+              <p>
+                Open your site and choose <strong>Sign in with Google</strong>. Accounts listed in
+                <code>AUTH_SUPERADMIN_EMAILS</code> become superadmins on first login. Superadmins
+                create courses at <code>/admin/courses</code> and semesters at
+                <code>/admin/courses/:courseId/semesters</code>, then invite staff.
+              </p>
+            </li>
+            <li class="gd-step">
+              <h2 class="gd-step__title">Enable student enrollment (optional)</h2>
+              <p>
+                Students enrol at <code>/enroll</code>. Until the institution signing key is set up,
+                that page answers <code>503 CREDENTIAL_UNAVAILABLE</code> and no student can
+                onboard; recording still works. It takes the offline root key, so follow the
+                <a href="#administration/institution">institution key steps</a> below.
+              </p>
+            </li>
+            <li class="gd-step">
+              <h2 class="gd-step__title">Plan retention and backups</h2>
+              <ul class="gd-list">
+                <li>
+                  <strong>Retention.</strong> After a semester is archived, a daily sweep (02:00
+                  UTC) deletes its stored bundles once <code>blob_retention_days</code> has passed
+                  (default 540, minimum 30). Database rows are never deleted. Archiving is
+                  forward-only.
+                </li>
+                <li>
+                  <strong>Backups.</strong> Take daily <code>pg_dump</code> backups of Postgres, and
+                  replicate or mirror the object storage.
+                </li>
+                <li>
+                  <strong>Restore drill.</strong> Run it once before production and quarterly after,
+                  against a clean environment, never production.
+                </li>
+              </ul>
+            </li>
+          </ol>
+
+          <h2 class="gd-sub gd-sub--first" data-section="keys">Keys and manifests</h2>
+          <p class="gd-lede">
+            How a course's assignments get their authority, and how students get an identity. Five
+            steps, done by three different people, never all by one.
+          </p>
+
+          <div class="gd-who">
+            <p class="gd-who__head">Who does what</p>
+            <ul>
+              <li>
+                <strong>Maintainer.</strong> Holds the root private key, offline. Signs course and
+                institution certificates, and builds the recorder.
+              </li>
+              <li>
+                <strong>Course staff.</strong> Hold their course's private key and its certificate.
+                Sign assignment manifests.
+              </li>
+              <li>
+                <strong>Deployment admin.</strong> Holds the institution key, the only private key
+                on any server.
+              </li>
+            </ul>
+            <p>
+              Nobody holds two of these in production. That is what stops a compromised server from
+              forging an assignment, and a compromised course laptop from forging a student.
+            </p>
+          </div>
+
+          <ul class="gd-chain" aria-label="The two chains of trust">
+            <li>
+              <strong>Assignments:</strong> the root key signs a course certificate, which
+              authorizes the course key, which signs each <code>.provenance-manifest</code>.
+            </li>
+            <li>
+              <strong>Students:</strong> the root key signs an institution certificate, which
+              authorizes the institution key, which signs student credentials.
+            </li>
+          </ul>
+          <p class="gd-aside-text">
+            The root key signs only those two kinds of certificate, never a manifest. The two chains
+            meet at the root and nowhere else.
+          </p>
+
+          <p class="gd-warn">
+            Do not run these commands on this website, and never paste or upload a private key
+            anywhere. Each one is an npm script of the Provenance repository, run on the machine
+            named in its step. The tools check their own work before writing anything.
+          </p>
+
+          <ol class="gd-steps">
+            <li class="gd-step" data-section="root">
+              <h2 class="gd-step__title">Create the root keypair</h2>
+              <p class="gd-meta">
+                <strong>Who:</strong> the maintainer. <strong>When:</strong> once, ever, on an
+                offline machine.
+              </p>
+              <p>
+                There is no separate root generator. The course-keypair generator writes a plain
+                ed25519 keypair in exactly the shape a root key needs. Run it on an air-gapped or
+                otherwise hardened machine, and back the private key up to physical media.
+              </p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>npm run keygen:course -- /Volumes/SECURE/root-keypair.json</code></pre>
+              <p class="gd-aside-text">
+                Pass only the path. Adding <code>--course-id</code> would mint a course certificate,
+                which is a different artifact. The tool prints the public key, writes the private
+                key at mode <code>0600</code>, and refuses to overwrite a file or to write inside
+                the repository.
+              </p>
+              <p class="gd-warn">
+                The root private key is the highest-value secret in the system: it authorizes every
+                course, past and future. Never put it in the repository, never email it, never log
+                it. The root key signs only course and institution certificates, never a manifest.
+                Rotating it is a fleet-wide event, so plan not to.
+              </p>
+              <p class="gd-aside-text">
+                A development root keypair exists for local testing. It is deliberately public and
+                must never be used for a real deployment.
+              </p>
+            </li>
+
+            <li class="gd-step" data-section="course">
+              <h2 class="gd-step__title">Create a course keypair and its certificate</h2>
+              <p class="gd-meta">
+                <strong>Who:</strong> course staff make the keypair; the maintainer signs the
+                certificate. <strong>When:</strong> when a course is onboarded, then each new
+                certificate window.
+              </p>
+              <p class="gd-code-label">Course staff: generate the keypair, on a secured machine</p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>npm run keygen:course -- /Volumes/SECURE/cs61a-fa26.json</code></pre>
+              <p>
+                The public key is printed. The private key is written to the path you chose at mode
+                <code>0600</code>: back it up to physical media. Send the maintainer only the public
+                half.
+              </p>
+              <p class="gd-code-label">Maintainer: sign the certificate, with the root keypair</p>
+              <pre class="gd-code" data-copy><code>npm run mint:course-cert -- \
+  --course-id berkeley-cs61a --course-pubkey &lt;64-hex-from-generate-step&gt; \
+  --valid-from 2026-08-20 --valid-until 2027-01-15 \
+  --root-keypair /Volumes/SECURE/root-keypair.json \
+  --out /Volumes/SECURE/cs61a-fa26.cert.json</code></pre>
+              <p class="gd-aside-text">
+                When one machine holds both keys, <code>keygen:course</code> can do both steps in
+                one run: pass <code>--course-id</code>, <code>--valid-from</code> and
+                <code>--valid-until</code> (and optionally <code>--root-keypair</code> and
+                <code>--cert-out</code>) along with the output path.
+              </p>
+              <p class="gd-warn">
+                Keep the validity window short, one semester. An offline recorder cannot learn that
+                a key was revoked, so a short window is the only protection. The certificate is
+                checked against the root public key before it is written.
+              </p>
+            </li>
+
+            <li class="gd-step" data-section="institution">
+              <h2 class="gd-step__title">Create the institution key and its certificate</h2>
+              <p class="gd-meta">
+                <strong>Who:</strong> the deployment admin on the server; the maintainer on the
+                offline machine. <strong>When:</strong> once per deployment, and only if students
+                enrol at <code>/enroll</code>.
+              </p>
+              <p>
+                There is one institution key per deployment, not one per course. Without it,
+                <code>/enroll</code> answers <code>503 CREDENTIAL_UNAVAILABLE</code>
+                (<code>no_institution_key</code>) permanently and no student can be onboarded.
+                Recording itself still works.
+              </p>
+              <p class="gd-code-label">Admin, on the server: generate the keypair</p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>npm run keygen:course -- /secure/institution-keypair.json</code></pre>
+              <p class="gd-aside-text">
+                Positional path only. Carry just the public key to the maintainer's offline machine.
+              </p>
+              <p class="gd-code-label">Maintainer, on the offline root machine: sign it</p>
+              <pre class="gd-code" data-copy><code>npm run mint:institution-cert -- \
+  --institution-id berkeley --institution-pubkey &lt;64-hex-from-generate-step&gt; \
+  --valid-from 2026-08-20 --valid-until 2027-08-19 \
+  --root-keypair /Volumes/SECURE/root-keypair.json \
+  --out /Volumes/SECURE/berkeley-institution.cert.json</code></pre>
+              <p class="gd-code-label">
+                Admin: bring the certificate back and set both halves in one variable, then restart
+                the API
+              </p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>PROVENANCE_INSTITUTION_KEY='{"private_key_hex":"&lt;64 hex&gt;","cert":&lt;the cert JSON&gt;}'</code></pre>
+              <p class="gd-warn">
+                The institution private key never leaves the server, and the root private key never
+                touches it. Treat the variable like the OAuth client secret, or more carefully:
+                whoever holds it can forge student attribution until the certificate's window
+                closes. Keep the window short: there is no offline revocation.
+              </p>
+              <p class="gd-aside-text">
+                It is deliberately not stored in Postgres, so a restore from backup will not bring
+                it back. Keep it in your deployment's secret handling and in the restore runbook. If
+                it leaks, sign a fresh certificate for a new keypair with the offline root key,
+                replace the variable and restart. Certificates already issued stay valid, because
+                recorded bundles must keep verifying.
+              </p>
+              <p class="gd-aside-text">
+                Watch the end of each window: when the certificate lapses,
+                <code>/enroll</code> answers <code>503</code> with <code>cert_out_of_window</code>,
+                which students see as “we cannot issue credentials right now”.
+              </p>
+            </li>
+
+            <li class="gd-step" data-section="manifest">
+              <h2 class="gd-step__title">Write and sign an assignment manifest</h2>
+              <p class="gd-meta">
+                <strong>Who:</strong> course staff. <strong>When:</strong> for every assignment,
+                before it is handed out.
+              </p>
+              <p>
+                Put the unsigned <code>.provenance-manifest</code> at the root of the assignment
+                starter folder, the folder students will open:
+              </p>
+              <pre class="gd-code" data-copy><code>{
+  "assignment_id": "hw03",
+  "semester": "fa26",
+  "issued_at": "2026-09-15T00:00:00Z",
+  "files_under_review": ["hw03.py"],
+  "course_id": "berkeley-cs61a",
+  "collaboration": "solo",
+  "submission": "bundle",
+  "scope": "directory",
+  "policy": {
+    "capture": {
+      "selection_change": true,
+      "focus_change": true,
+      "terminal": true,
+      "heartbeat_interval_ms": 30000
+    },
+    "enrollment": { "required": true }
+  }
+}</code></pre>
+              <ul class="gd-list gd-fields">
+                <li>
+                  <code>assignment_id</code> is unique per assignment. Changing it each time is what
+                  stops an old session being replayed against a new assignment.
+                </li>
+                <li>
+                  <code>files_under_review</code> lists workspace-relative paths. Only these get the
+                  expected-content check that detects outside changes; other files are still
+                  recorded.
+                </li>
+                <li>
+                  <code>course_id</code> must equal the <code>course_id</code> in the certificate
+                  you sign with.
+                </li>
+                <li>
+                  <code>collaboration</code> is <code>solo</code> or <code>group</code>;
+                  <code>submission</code> is <code>bundle</code> or <code>git</code>;
+                  <code>scope</code> is <code>directory</code> or <code>repo</code>.
+                </li>
+                <li>
+                  <code>policy.capture</code> lets a course turn capture down. A student cannot turn
+                  it off, because it sits inside the signed payload. Leave out keys to keep the
+                  default (everything on, 30 s heartbeat).
+                </li>
+                <li>
+                  <code>policy.enrollment.required</code> defaults to <code>true</code>. Setting it
+                  to <code>false</code> stops the enrollment prompt but loses attribution: nothing
+                  in a submission says who produced it, so group work cannot be split between
+                  partners. It only takes effect at manifest format 2.0.
+                </li>
+              </ul>
+              <p class="gd-code-label">Sign it, from the course's secured machine</p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>PROVENANCE_COURSE_KEYPAIR_PATH=/Volumes/SECURE/cs61a-fa26.json \
+PROVENANCE_COURSE_CERT_PATH=/Volumes/SECURE/cs61a-fa26.cert.json \
+  npm run sign:manifest -- /path/to/assignment-starter/.provenance-manifest</code></pre>
+              <p>
+                Leave out <code>sig</code> and <code>course_cert</code>: the signer adds both, and
+                replaces them if you re-sign. It checks the whole trust chain before writing, and
+                refuses to write a manifest that would not verify, for example when
+                <code>course_id</code> differs from the certificate's. Add
+                <code>--format 1.0</code> only for the legacy shape, which is still supported for
+                archived work.
+              </p>
+            </li>
+
+            <li class="gd-step" data-section="build">
+              <h2 class="gd-step__title">Build the recorder and update the extension hashes</h2>
+              <p class="gd-meta">
+                <strong>Who:</strong> the maintainer. <strong>When:</strong> once per root-key
+                rotation, not once per course, then again for each recorder release.
+              </p>
+              <p>
+                One VS Code build serves every course: it embeds only the root public key, and a
+                course's authority travels in its certificate.
+              </p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>PROVENANCE_ROOT_PUBLIC_KEY_HEX=&lt;the maintainer's root public key&gt; \
+  npm run build:prod --workspace packages/recorder</code></pre>
+              <p class="gd-aside-text">
+                The script refuses to run if the key is missing, malformed, or the development key,
+                so a misconfigured release cannot quietly ship a development build. It restores the
+                source afterwards.
+              </p>
+              <p class="gd-code-label">
+                Only while version 1.x manifests are still in the field, also pass the old course
+                key
+              </p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>PROVENANCE_ROOT_PUBLIC_KEY_HEX=&lt;the maintainer's root public key&gt; \
+PROVENANCE_LEGACY_COURSE_PUBLIC_KEY_HEX=&lt;the old course public key&gt; \
+  npm run build:prod --workspace packages/recorder</code></pre>
+              <p class="gd-code-label">
+                Then add the new build to the analyzer's list of known-good hashes
+              </p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>npm run update-hashes -- --root-keypair /Volumes/SECURE/root-keypair.json</code></pre>
+              <p>
+                Without this, submissions from the new build are flagged
+                <code>extension_hash_mismatch</code>. Embedding the legacy key changes the built
+                files and so the hash: to allow both a 1.x-compatible and a 2.0-only build, run it
+                once with the legacy variable set and once without. Other modes are
+                <code>--show</code>, <code>--no-build</code>, <code>--hash &lt;hex&gt;</code>,
+                <code>--remove &lt;hex&gt;</code>, <code>--clear</code> and <code>--help</code>.
+              </p>
+              <p>
+                The JetBrains and Neovim recorders build in their own repositories. Compute their
+                hashes there, then add each with <code>--hash &lt;hex&gt;</code>:
+              </p>
+              <p class="gd-code-label">JetBrains</p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>./gradlew :recorder:computeExtensionHash</code></pre>
+              <p class="gd-code-label">Neovim, inside Neovim</p>
+              <pre
+                class="gd-code"
+                data-copy
+              ><code>:lua print(require('provenance.recorder.commands.extension_hash').compute_installed())</code></pre>
+              <p class="gd-code-label">Where the root public key goes</p>
+              <ul class="gd-list">
+                <li>
+                  <code>PROVENANCE_ROOT_PUBLIC_KEY_HEX</code> on the server, at runtime. Unset is
+                  allowed, but 2.0 submissions then validate as <code>warn</code> with check 2
+                  skipped.
+                </li>
+                <li>
+                  <code>VITE_ROOT_PUBLIC_KEY_HEX</code> when building the analyzer, for the
+                  standalone <code>/local</code> route.
+                </li>
+              </ul>
+              <p class="gd-aside-text">
+                Both are build-time or deploy-time values: rotating the root key means rebuilding
+                and redeploying the analyzer and all three recorders.
+              </p>
+            </li>
+          </ol>
+
+          <h2 class="gd-sub">If something fails</h2>
+          <div class="gd-qas">
+            <details class="gd-qa">
+              <summary>“HOSTED_DOMAIN_MISMATCH” when signing in.</summary>
+              <div>
+                <p>
+                  The account's domain doesn't match <code>AUTH_ALLOWED_HOSTED_DOMAINS</code>. Check
+                  the variable, and that the person is using their institutional account rather than
+                  a personal Gmail.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>The worker isn't processing jobs.</summary>
+              <div>
+                <ul>
+                  <li>
+                    Confirm the worker is running (<code>--mode=worker</code> or
+                    <code>--mode=all</code>).
+                  </li>
+                  <li>Look for failed jobs in the <code>pgboss.job</code> table.</li>
+                  <li>Check the server logs for <code>pg-boss error</code> entries.</li>
+                  <li>Make sure the API and the worker use the same <code>DATABASE_URL</code>.</li>
+                </ul>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>The retention sweep isn't running.</summary>
+              <div>
+                <p>
+                  Check <code>pgboss.schedule</code> for <code>retention_sweep</code>. If it is
+                  missing, restart the worker: it registers the schedule on startup.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>MinIO connection refused.</summary>
+              <div>
+                <p>
+                  Confirm MinIO is running and reachable from the server host, using its
+                  <code>/minio/health/live</code> endpoint.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>Manifest signing refuses to write.</summary>
+              <div>
+                <p>
+                  The manifest's <code>course_id</code> does not match the certificate's, so the
+                  chain check failed. Fix the manifest or use the right certificate.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>A new recorder build shows <code>extension_hash_mismatch</code>.</summary>
+              <div>
+                <p>
+                  <code>npm run update-hashes</code> has not been run for that build. Run it once
+                  per build variant.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>
+                Every 2.0 submission validates as <code>warn</code>, check 2 skipped.
+              </summary>
+              <div>
+                <p>
+                  <code>PROVENANCE_ROOT_PUBLIC_KEY_HEX</code> is not set on the server. If a whole
+                  cohort lands on <code>warn</code>, check this first.
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>Students cannot enrol: “we cannot issue credentials right now”.</summary>
+              <div>
+                <p>
+                  <code>/enroll</code> is answering <code>503 CREDENTIAL_UNAVAILABLE</code>. The
+                  reason is <code>no_institution_key</code> (the variable is not set) or
+                  <code>cert_out_of_window</code> (the institution certificate has lapsed: sign a
+                  new one).
+                </p>
+              </div>
+            </details>
+            <details class="gd-qa">
+              <summary>A database migration fails.</summary>
+              <div>
+                <p>
+                  “relation already exists” means a migration was partially applied: look at
+                  <code>drizzle.__drizzle_migrations</code>.
+                </p>
+                <p class="gd-warn">
+                  Dropping and recreating the database is for clean development environments only.
+                  Never do it in production: diagnose the failed migration and apply the missing DDL
+                  manually.
+                </p>
+              </div>
+            </details>
+          </div>
+
+          <div class="gd-more gd-more--lead">
+            <p class="gd-more__head">The full technical documentation</p>
+            <a
+              class="btn btn--ink"
+              href="https://github.com/ProvenanceTools/provenance/blob/main/docs/admin-guide.md"
+            >
+              <span>Read the full Admin Guide</span>
+              <span class="btn__icon" aria-hidden="true">&#8599;</span>
+            </a>
+            <ul>
+              <li>
+                <a
+                  href="https://github.com/ProvenanceTools/provenance/blob/main/docs/key-management.md"
+                  >Key management</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/ProvenanceTools/provenance/blob/main/docs/deploy-apphost.md"
+                  >Deploying on the EECS apphost</a
+                >
+              </li>
+              <li>
+                <a
+                  href="https://github.com/ProvenanceTools/provenance#course-staff-key--manifest-workflow"
+                  >Course staff: key and manifest workflow (original on GitHub)</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </article>
+
+      <div class="site-foot" data-theme="day">
+        <footer class="foot wrap">
+          <a class="foot__brand" href="./" aria-label="Provenance, overview">
+            <svg class="mark" viewBox="40 64 176 124" aria-hidden="true">
+              <defs>
+                <clipPath id="foot-cross"><rect x="96" y="50" width="64" height="78" /></clipPath>
+              </defs>
+              <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
+              <rect class="mark__accent" x="110" y="74" width="96" height="104" rx="34" />
+              <g clip-path="url(#foot-cross)">
+                <rect class="mark__ink" x="50" y="74" width="96" height="104" rx="34" />
+              </g>
+            </svg>
+            <span class="wordmark">Provenance</span>
+          </a>
+          <ul class="foot__links" role="list">
+            <li>
+              <a href="mailto:aaryanm@berkeley.edu?subject=Provenance%20for%20my%20course"
+                >Talk to us</a
+              >
+            </li>
+            <li><a href="https://github.com/ProvenanceTools">GitHub</a></li>
+            <li><a href="students.html#get">Install guide</a></li>
+            <li><a href="#administration">Admin guide</a></li>
+          </ul>
+          <p class="foot__made">Open source · Built at UC Berkeley.</p>
+        </footer>
+      </div>
+    </main>
+
+    <script type="module" src="/src/guide.ts"></script>
+  </body>
+</html>

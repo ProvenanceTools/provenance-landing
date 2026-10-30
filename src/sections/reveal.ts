@@ -15,7 +15,6 @@ export function setupReveals(): () => void {
   const ctx = gsap.context(() => {
     // Headlines.
     document.querySelectorAll<HTMLElement>('[data-split]').forEach((el) => {
-      const inHow = Boolean(el.closest('.how'));
       SplitText.create(el, {
         type: 'lines',
         mask: 'lines',
@@ -23,7 +22,6 @@ export function setupReveals(): () => void {
         autoSplit: true,
         onSplit(self) {
           el.style.visibility = 'visible';
-          if (inHow) return; // the pinned chapter crossfades its copy as a whole
           return gsap.from(self.lines, {
             yPercent: 130, // clears the mask, which reaches 0.2em below the line
             duration: 1.25,
@@ -39,9 +37,9 @@ export function setupReveals(): () => void {
     document.querySelectorAll<HTMLElement>('[data-fade]').forEach((el) => {
       gsap.fromTo(
         el,
-        { autoAlpha: 0, y: 26 },
+        { opacity: 0, y: 26 },
         {
-          autoAlpha: 1,
+          opacity: 1,
           y: 0,
           duration: 1.3,
           ease: EASE,
@@ -53,9 +51,9 @@ export function setupReveals(): () => void {
     // Course names, one after another.
     gsap.fromTo(
       '[data-course]',
-      { autoAlpha: 0, yPercent: 55 },
+      { opacity: 0, yPercent: 55 },
       {
-        autoAlpha: 1,
+        opacity: 1,
         yPercent: 0,
         duration: 1.2,
         ease: EASE,

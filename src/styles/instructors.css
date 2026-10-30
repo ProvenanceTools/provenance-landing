@@ -1,0 +1,426 @@
+/* For instructors & TAs.
+   Loaded only by instructors.html, after the shared styles. Type comes from the shared
+   page-type classes (pt-*), the same ones the overview and students pages use; this file sets
+   only layout, widths and the interfaces that belong to this page. */
+
+/* ------------------------------------------------------------ site bar, this page */
+
+/* The site bar keeps the logo and the three pages and scrolls away with the page, as on a
+   product page; the sub-navigation below it then takes the top of the window. The two
+   actions that used to sit in the site bar live in the sub-navigation. */
+.page-instructors .nav {
+  position: absolute;
+}
+.page-instructors .nav__end {
+  display: none;
+}
+/* Anchors land just under the sub-navigation (the site bar is gone by then). */
+:root:has(.page-instructors) {
+  --sub-h: 52px;
+  scroll-padding-top: calc(var(--sub-h) + 16px);
+}
+.inst #instructors {
+  /* Overview is the very top of the page, where both bars are showing. */
+  scroll-margin-top: calc(var(--nav-h) - 16px);
+}
+
+/* ------------------------------------------------------------- sub-navigation */
+
+/* The second bar: the page's name on the left; the places on this page, GitHub and the one
+   action on the right. Only the action is a button. It sticks to the top of the window once
+   the site bar has scrolled away, and is styled like it. */
+.inst-sub {
+  position: sticky;
+  top: 0;
+  z-index: calc(var(--z-nav) - 1);
+  height: var(--sub-h);
+  --focus: var(--blue);
+  color: var(--ink);
+  background: rgb(247 247 245 / 0.84);
+  box-shadow: 0 1px 0 rgb(4 30 66 / 0.08);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+.inst-sub__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 100%;
+  padding: 0 var(--gutter);
+}
+.inst-sub__title {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  color: var(--ink);
+}
+.inst-sub__end {
+  display: flex;
+  align-items: center;
+  gap: clamp(8px, 1.6vw, 20px);
+  min-width: 0;
+}
+.inst-sub__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(0px, 1.4vw, 20px);
+  min-width: 0;
+}
+.inst-sub__links a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  min-height: 44px;
+  padding: 0 10px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: rgb(4 30 66 / 0.68);
+  transition: color 0.3s var(--ease-soft);
+}
+.inst-sub__links a:hover {
+  color: var(--ink);
+}
+/* The place you are in: darker, with a short gold rule beneath. */
+.inst-sub__links a::after {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 7px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transition: transform 0.4s var(--ease-out);
+}
+.inst-sub__links a[aria-current] {
+  color: var(--ink);
+}
+.inst-sub__links a[aria-current]::after {
+  transform: scaleX(1);
+}
+.inst-sub__out {
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+.inst-sub .btn {
+  --h: 36px;
+  flex: none;
+  padding: 0 16px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+/* ----------------------------------------------------------------- header */
+
+.inst-head {
+  padding: clamp(56px, 10vh, 120px) 0 clamp(40px, 6vh, 72px);
+}
+.inst-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px 32px;
+  margin-top: clamp(28px, 4vh, 40px);
+}
+/* One primary action, one quiet one: the pill is larger and lifts on hover; the text link
+   stays a comfortable touch target without competing. */
+.inst-actions .btn {
+  --h: 58px;
+  padding-left: 30px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  transition:
+    transform 0.5s var(--ease-out),
+    box-shadow 0.5s var(--ease-soft),
+    background-color 0.3s var(--ease-soft);
+}
+.inst-actions .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -18px rgb(4 30 66 / 0.45);
+}
+.inst-actions .btn:active {
+  transform: scale(0.975);
+}
+.inst-actions .pt-link,
+.inst-stage__more .pt-link {
+  min-height: 44px;
+  padding-inline: 6px;
+}
+
+/* ------------------------------------------------- the live demonstration */
+
+/* The product is the first picture: two recordings of one file, as wide as the overview's. */
+.inst .inst-stage {
+  width: min(100% - 2 * var(--gutter), 1040px);
+  margin: 0 auto;
+  padding: clamp(28px, 4vw, 52px) clamp(18px, 3.6vw, 48px) clamp(28px, 4vw, 52px);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px rgb(245 245 242 / 0.12),
+    0 50px 100px -40px rgb(4 30 66 / 0.55);
+}
+.inst-stage > .pt-h3 {
+  margin-bottom: clamp(24px, 4vh, 40px);
+  text-align: center;
+}
+/* A small way on from the recording to the evidence, on the dark frame. */
+.inst-stage__more {
+  margin-top: clamp(12px, 2vh, 20px);
+  text-align: center;
+}
+.inst-stage__more .pt-link {
+  color: var(--porcelain);
+}
+
+/* --------------------------------------------------- the annotated evening */
+
+.inst-evening {
+  padding: clamp(96px, 14vh, 176px) 0 clamp(80px, 12vh, 140px);
+}
+.inst-evening .pt-body {
+  margin-top: 8px;
+}
+.inst .evening {
+  width: min(100%, 1040px);
+  margin: clamp(32px, 5vh, 56px) auto 0;
+  padding: clamp(16px, 3vw, 40px) clamp(14px, 3vw, 40px) clamp(8px, 1.4vw, 16px);
+  border-radius: 24px;
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgb(4 30 66 / 0.06),
+    inset 0 0 0 1px rgb(4 30 66 / 0.08);
+}
+
+/* --------------------------------------------------------------- evidence */
+
+/* Its own chapter, on white, as the privacy section is on the students page. */
+main .inst-review[data-theme='day'] {
+  background: #fff;
+}
+.inst-review {
+  padding: clamp(96px, 14vh, 176px) 0;
+}
+.inst-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(12px, 1.6vw, 20px);
+  width: min(100%, 1040px);
+  margin: clamp(40px, 6vh, 64px) auto 0;
+}
+.inst-card {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 24px;
+  padding: clamp(24px, 3vw, 40px);
+  border-radius: 24px;
+  background: var(--day-0);
+}
+/* The indicators are the interface: a size that reads as product, not footnote. */
+.inst-card .flag,
+.inst-card .checks {
+  margin-top: 0;
+  min-height: 56px;
+  align-items: center;
+}
+.inst-card .flag {
+  gap: 14px;
+  padding: 9px 22px 9px 9px;
+  font-size: 1.0625rem;
+  background: #fff;
+}
+.inst-card .flag__level {
+  padding: 7px 15px;
+  font-size: 0.875rem;
+}
+.inst-card .checks {
+  gap: 12px 28px;
+  font-size: 0.9375rem;
+}
+.inst-card .checks i {
+  width: 11px;
+  height: 11px;
+}
+.inst-card .pt-body strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+.inst-pledges {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 4vw, 56px);
+  width: min(100%, 1040px);
+  margin: clamp(56px, 9vh, 96px) auto 0;
+}
+.inst-pledges li {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  padding-top: 20px;
+  border-top: 2px solid var(--gold);
+}
+
+/* ------------------------------------------------------------------ tools */
+
+.inst-tools {
+  padding: clamp(96px, 14vh, 176px) 0 clamp(80px, 12vh, 140px);
+}
+.inst .suite__map {
+  width: min(100%, 1040px);
+  margin: clamp(72px, 10vh, 104px) auto 0;
+  column-gap: clamp(28px, 3.4vw, 48px);
+}
+.inst .suite__stage {
+  font-size: 0.875rem;
+}
+.inst .tool {
+  padding: 20px 22px 22px;
+  border-radius: 24px;
+}
+.inst .tool:not(.tool--bundle) {
+  background: #fff;
+  box-shadow:
+    0 1px 2px rgb(4 30 66 / 0.06),
+    inset 0 0 0 1px rgb(4 30 66 / 0.08);
+}
+.inst .tool__name {
+  font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.3rem);
+}
+.inst .tool__line {
+  font-size: 0.9375rem;
+}
+
+/* ----------------------------------------------------------------- try it */
+
+.inst-try {
+  padding: clamp(32px, 5vh, 64px) 0 clamp(96px, 14vh, 176px);
+}
+.inst .tryit__inner {
+  gap: clamp(32px, 5vh, 48px);
+}
+.inst .tryit__copy {
+  gap: 8px;
+  max-width: none;
+}
+.inst .playground {
+  width: min(100%, 1040px);
+  margin-inline: auto;
+  border-radius: 24px;
+  box-shadow:
+    inset 0 0 0 1px rgb(245 245 242 / 0.12),
+    0 50px 100px -40px rgb(4 30 66 / 0.55);
+}
+
+/* The closing footer: brand on the left, the credit on the right. */
+.inst .foot {
+  grid-template-columns: 1fr auto;
+}
+
+/* ----------------------------------------------------------------- limits */
+
+/* Quiet, but easy to read: the statements use the same grey line as the page headers, set
+   at a comfortable measure with room between them; the quote sits apart below. */
+.inst-limits {
+  padding: clamp(96px, 14vh, 168px) 0 clamp(96px, 14vh, 168px);
+}
+.inst-limits__text {
+  display: grid;
+  justify-items: center;
+  gap: clamp(20px, 3vh, 28px);
+  margin-top: clamp(20px, 3vh, 28px);
+}
+.inst-limits__text .pt-sub {
+  max-width: 38ch;
+  margin-top: 0;
+  line-height: 1.38;
+}
+.inst .inst-quote {
+  width: min(100%, 40rem);
+  margin: clamp(56px, 9vh, 96px) auto 0;
+  text-align: left;
+}
+.inst .inst-quote p {
+  font-size: clamp(1.375rem, 1.1rem + 1vw, 2rem);
+  line-height: 1.2;
+}
+.inst .inst-quote footer {
+  margin-bottom: 14px;
+  font-size: 0.9375rem;
+}
+
+/* ------------------------------------------------------------ small screens */
+
+@media (max-width: 760px) {
+  .inst-cards,
+  .inst-pledges {
+    grid-template-columns: 1fr;
+  }
+  .inst-actions {
+    flex-direction: column;
+    gap: 18px;
+  }
+}
+@media (max-width: 760px) {
+  .inst .foot {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+@media (max-width: 640px) {
+  :root:has(.page-instructors) {
+    --sub-h: 48px;
+  }
+  /* The page name is already in the site bar above; here the links and the action share
+     the width. If the screen is very narrow the links scroll sideways rather than vanish. */
+  .inst-sub__title {
+    display: none;
+  }
+  .inst-sub__bar {
+    gap: 8px;
+  }
+  .inst-sub__end {
+    flex: 1;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .inst-sub__links {
+    flex: 1;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-left: -8px;
+  }
+  .inst-sub__links::-webkit-scrollbar {
+    display: none;
+  }
+  .inst-sub__links a {
+    padding: 0 8px;
+    font-size: 0.875rem;
+  }
+  .inst-sub__links a::after {
+    left: 8px;
+    right: 8px;
+  }
+  .inst-sub .btn {
+    --h: 40px;
+    padding: 0 14px;
+    font-size: 0.875rem;
+  }
+}
+@media (max-width: 400px) {
+  .inst-sub__links a {
+    padding: 0 6px;
+    font-size: 0.8125rem;
+  }
+}

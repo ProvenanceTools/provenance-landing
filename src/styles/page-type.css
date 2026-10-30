@@ -1,0 +1,140 @@
+/* ------------------------------------------------------------ page type */
+
+/* A clear hierarchy for the overview and students pages: one very large headline,
+   a short grey line under it, then small, easy body text. Same colours as the rest
+   of the site; the headline face is set at its normal width and a heavier weight,
+   which reads calmer than the condensed display cut. Nothing here changes existing
+   classes, so other pages are untouched until they opt in. */
+
+.pt-section {
+  padding: clamp(96px, 14vh, 176px) 0;
+}
+.pt-center {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+/* Small and dark: names the section, sits right above the headline. */
+.pt-eyebrow {
+  margin: 0 0 clamp(10px, 1.4vh, 16px);
+  font-size: clamp(1.0625rem, 0.95rem + 0.4vw, 1.375rem);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--blue);
+}
+
+/* The page's one headline. */
+.pt-hero {
+  font-size: clamp(3.1rem, 1.6rem + 6.2vw, 7.75rem);
+  font-weight: 600;
+  font-stretch: 100%;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+/* Section headlines. */
+.pt-h2 {
+  font-size: clamp(2.4rem, 1.4rem + 4vw, 5rem);
+  font-weight: 600;
+  font-stretch: 100%;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+
+/* Card and block headlines. */
+.pt-h3 {
+  font-size: clamp(1.5rem, 1.1rem + 1.3vw, 2.25rem);
+  font-weight: 600;
+  font-stretch: 100%;
+  line-height: 1.1;
+  letter-spacing: -0.028em;
+  text-wrap: balance;
+}
+
+/* The grey line under a headline: bigger than body, quieter than the headline. */
+.pt-sub {
+  max-width: 34ch;
+  margin-top: clamp(16px, 2.2vh, 24px);
+  font-size: clamp(1.25rem, 1.05rem + 0.75vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.018em;
+  color: rgb(4 30 66 / 0.62);
+  text-wrap: balance;
+}
+
+/* Body text. */
+.pt-body {
+  max-width: 42ch;
+  font-size: clamp(1.0625rem, 1rem + 0.2vw, 1.1875rem);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: rgb(4 30 66 / 0.72);
+  text-wrap: pretty;
+}
+
+/* Fine print and captions. */
+.pt-small {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: rgb(4 30 66 / 0.66);
+}
+
+/* A big number with its caption under it. */
+.pt-stat {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  text-align: center;
+}
+.pt-stat__num {
+  font-size: clamp(3.25rem, 2rem + 4.6vw, 6.5rem);
+  font-weight: 600;
+  font-stretch: 100%;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.pt-stat__cap {
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.1875rem);
+  font-weight: 500;
+  color: rgb(4 30 66 / 0.66);
+}
+
+/* A quiet text link with a chevron, for the second thing you might do. */
+.pt-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: clamp(1.0625rem, 1rem + 0.2vw, 1.1875rem);
+  font-weight: 500;
+  color: var(--blue);
+}
+.pt-link::after {
+  content: '\203A';
+  font-size: 1.25em;
+  line-height: 1;
+  transition: transform 0.3s var(--ease-out);
+}
+.pt-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+.pt-link:hover::after {
+  transform: translateX(3px);
+}
+
+/* Entrance for the first screen, in CSS so it never waits on script. */
+html.motion:not(.ready) [data-enter] {
+  opacity: 0;
+}
+html.motion.ready [data-enter] {
+  animation: fade-up 1.2s var(--ease-out) both;
+  animation-delay: calc(0.1s + var(--d, 0) * 0.1s);
+}
